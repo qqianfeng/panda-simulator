@@ -17,7 +17,8 @@
   <!-- -->
   <!-- -->
   <!--========================================================================================-->
-  <arg name="load_gripper"              default="true"/> 
+  <arg name="load_gripper"              default="false"/> 
+  <arg name="load_hand"                 default="true"/> 
   <arg name="use_custom_action_servers" default="true"/>
   <arg name="start_moveit"              default="false"/>
   <arg name="load_demo_planning_scene"  default="false"/>
@@ -48,20 +49,21 @@
   <param name="robot_description" command="
 	$(find xacro)/xacro '$(find franka_panda_description)/robots/panda_arm_hand.urdf.xacro'
 	load_gripper:=$(arg load_gripper)
+	load_hand:=$(arg load_hand)
 	load_gazebo:=$(arg load_gazebo)
 	intel_realsense:=$(arg intel_realsense)
 	--inorder"/>
   <param name="/arm/root_name"             value="panda_link0" />
   <param name="/arm/tip_name"              value="panda_hand" 
-	 if="$(arg load_gripper)"/> 
+	 if="$(arg load_gripper)"    /> 
   <param name="/arm/tip_name"              value="panda_link8" 
 	 unless="$(arg load_gripper)"/> 
   <param name="/franka_gripper/robot_ip"   value="sim" 
-	 if="$(arg load_gripper)" /> 
+	 if="$(arg load_gripper)"    /> 
   <param name="/arm/gravity_tip_name"      value="panda_hand" 
-	 if="$(arg load_gripper)" /> 
+	 if="$(arg load_gripper)"    /> 
   <param name="/arm/gravity_tip_name"      value="panda_link8" 
-	 unless="$(arg load_gripper)" /> 
+	 unless="$(arg load_gripper)"/> 
 
   <!-- We resume the logic in empty_world.launch, changing the name of the world to be launched -->
   <include if="$(arg load_gazebo)" file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -109,6 +111,5 @@
   <group if="$(eval arg('load_demo_planning_scene') == true)">
     <node name="demo_scene_loader" pkg="franka_moveit" type="create_demo_planning_scene.py"
 	  respawn="false" output="screen" />
-  </group>   
-
+  </group>  
 </launch>
