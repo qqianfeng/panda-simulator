@@ -17,15 +17,16 @@
   <!-- -->
   <!-- -->
   <!--========================================================================================-->
+  <arg name="no_end_effector"           default="false"/>
   <arg name="load_gripper"              default="false"/> 
-  <arg name="load_hand"                 default="true"/> 
-  <arg name="use_custom_action_servers" default="true"/>
+  <arg name="load_hand"                 default="true" /> 
+  <arg name="use_custom_action_servers" default="true" />
   <arg name="start_moveit"              default="false"/>
   <arg name="load_demo_planning_scene"  default="false"/>
 
   <arg name="paused"                    default="false"/>
-  <arg name="use_sim_time"              default="true"/>
-  <arg name="gui"                       default="true"/>
+  <arg name="use_sim_time"              default="true" />
+  <arg name="gui"                       default="true" />
   <arg name="headless"                  default="false"/>
   <arg name="debug"                     default="false"/>
 
@@ -46,6 +47,8 @@
 
   <!-- Load parameters to ROS parameter server -->
   <rosparam command="load" file="$(find panda_gazebo)/config/robot_details.yaml"/>
+  <!--<rosparam command="load" file="$(find hithand_control)/config/hithand_control.yaml"/> -->
+
   <param name="robot_description" command="
 	$(find xacro)/xacro '$(find franka_panda_description)/robots/panda_arm_hand.urdf.xacro'
 	load_gripper:=$(arg load_gripper)
@@ -53,17 +56,24 @@
 	load_gazebo:=$(arg load_gazebo)
 	intel_realsense:=$(arg intel_realsense)
 	--inorder"/>
-  <param name="/arm/root_name"             value="panda_link0" />
-  <param name="/arm/tip_name"              value="panda_hand" 
-	 if="$(arg load_gripper)"    /> 
-  <param name="/arm/tip_name"              value="panda_link8" 
-	 unless="$(arg load_gripper)"/> 
-  <param name="/franka_gripper/robot_ip"   value="sim" 
-	 if="$(arg load_gripper)"    /> 
-  <param name="/arm/gravity_tip_name"      value="panda_hand" 
-	 if="$(arg load_gripper)"    /> 
-  <param name="/arm/gravity_tip_name"      value="panda_link8" 
-	 unless="$(arg load_gripper)"/> 
+  <param name="/arm/root_name"           value="panda_link0" />
+
+  <param name="/arm/tip_name"            value="hithand"
+	 if="$(arg load_hand)" />
+  <param name="/arm/tip_name"            value="panda_hand" 
+	 if="$(arg load_gripper)" />
+  <param name="/arm/tip_name"            value="panda_link8" 
+	 if="$(arg no_end_effector)" />
+
+  <!--<param name="/franka_gripper/robot_ip" value="sim" 
+	 unless="$(arg no_end_effector)"    /> -->
+
+  <param name="/arm/gravity_tip_name"    value="hithand"
+	 if="$(arg load_hand)" />
+  <param name="/arm/gravity_tip_name"    value="panda_hand" 
+	 if="$(arg load_gripper)" />
+  <param name="/arm/gravity_tip_name"    value="panda_link8" 
+	 if="$(arg no_end_effector)" />
 
   <!-- We resume the logic in empty_world.launch, changing the name of the world to be launched -->
   <include if="$(arg load_gazebo)" file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -77,15 +87,15 @@
 
   <!-- Spawn urdf of the robot -->
   <node name="robot_description" pkg="gazebo_ros" type="spawn_model" 
-	args="-param robot_description -urdf -model panda $(arg initial_joint_states)"/>
+	args="-param robot_description -urdf -model panda $(arg initial_joint_states)"/> 
 
   <!-- create a tf with base frame as 'base' (to match aml_robot) -->
   <node name="base_to_link0" pkg="tf" type="static_transform_publisher"
         args="0 0 0 0 0 0 1 base panda_link0 100" />
   <node name="world_to_base" pkg="tf" type="static_transform_publisher"
 	args="0 0 0 0 0 0 1 world base 100" />
-
-  <!-- ros_control panda launch file -->
+	
+  <!-- ros_control panda launch file 
   <include file="$(find panda_sim_controllers)/launch/panda_sim_controllers.launch">
       <arg name="gui"               value="$(arg gui)" />
       <arg name="ns"                value="$(arg ns)" />
@@ -111,5 +121,5 @@
   <group if="$(eval arg('load_demo_planning_scene') == true)">
     <node name="demo_scene_loader" pkg="franka_moveit" type="create_demo_planning_scene.py"
 	  respawn="false" output="screen" />
-  </group>  
+  </group> -->
 </launch>
