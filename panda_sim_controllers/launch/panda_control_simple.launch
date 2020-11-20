@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<launch>
+
+  <!-- ================================================================================= -->
+  <arg name="load_gripper" default="false"/>
+  <arg name="load_hand"    default="true" />
+  <arg name="gui"          default="false"/>
+  <arg name="ns"           default="panda_simulator"/>
+  <!-- ================================================================================= -->  
+  <arg name="robot_name"   value="panda_hithand"
+       if="$(arg load_hand)"/>
+  <arg name="robot_name"   value="panda"
+       unless="$(arg load_hand)"/>
+  <!-- ================================================================================= -->  
+
+  <rosparam file="$(find panda_sim_controllers)/config/panda_control_simple.yaml" command="load"/>
+
+  <!-- ================================================================================= -->  
+  <!-- Load ROS controllers -->
+  <node name="controller_spawner" pkg="controller_manager" type="spawner"
+        respawn="false" output="screen" args="joint_state_controller
+					     panda_j1_position_controller
+					     panda_j2_position_controller
+					     panda_j3_position_controller
+					     panda_j4_position_controller
+					     panda_j5_position_controller
+					     panda_j6_position_controller
+					     panda_j7_position_controller"/>
+
+
+  <!-- convert joint states to TF transforms -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+	respawn="false" output="screen"/>
+
+
+</launch>

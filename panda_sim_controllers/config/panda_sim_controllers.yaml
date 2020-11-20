@@ -5,7 +5,7 @@ panda_simulator:
     publish_rate: 100
 
 
-  # Panda SDK Controllers: Position --------------------------
+# Panda SDK Controllers: Position --------------------------
   position_joint_position_controller:
     type: panda_sim_controllers/PandaPositionController
     topic_joint_command: /panda_simulator/motion_controller/arm/joint_commands
@@ -33,7 +33,7 @@ panda_simulator:
         joint: panda_joint7
         pid: {p: 3000,  i: 10.0, d: 4.0}
 
-  # Panda SDK Controllers: Velocity --------------------------
+# Panda SDK Controllers: Velocity --------------------------
   velocity_joint_velocity_controller:
     type: panda_sim_controllers/PandaVelocityController
     topic: /panda_simulator/motion_controller/arm/joint_commands
@@ -60,7 +60,7 @@ panda_simulator:
         joint: panda_joint7
         pid: {p: 0.05,  i: 0.0, d: 0.01}
 
-  # Panda SDK Controllers: Effort --------------------------
+# Panda SDK Controllers: Effort --------------------------
   effort_joint_torque_controller:
     type: panda_sim_controllers/PandaEffortController
     topic: /panda_simulator/motion_controller/arm/joint_commands
@@ -80,7 +80,7 @@ panda_simulator:
       panda_joint7_controller:
         joint: panda_joint7
 
-  # Panda SDK Controllers: Gravity Compensation ------------
+# Panda SDK Controllers: Gravity Compensation ------------
   effort_joint_gravity_controller:
     type: panda_sim_controllers/PandaGravityController
     joints:

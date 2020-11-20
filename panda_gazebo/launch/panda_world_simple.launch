@@ -104,25 +104,8 @@
 	args="0 0 0 0 0 0 1 world base 100" />
 
 
-  <!-- MAYBE THIS PART HERE MISSING, CHECK THIS: Publish joint states to TF transforms for rViz ->
-  <group if="$(arg robot_state_publisher)">
-    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
-          respawn="false" output="screen">
-      <param name="publish_frequency" value="$(arg state_rate)"/>
-      <remap from="/joint_states" to="/$(arg robot_name)/joint_states" />
-    </node>
-  </group>
-  
-  
-  <!-Launch Gazebo TF node->
-  <group if="$(arg gazebo_tf)">
-    <node name="gazebo_tf" pkg="gazebo2rviz" type="gazebo2tf_node.py" output="screen"
-	  args="$(arg robot_name)"/>
-  </group> -->
-
-	
   <!-- Controllers -->
-  <include file="$(find panda_sim_controllers)/launch/panda_sim_controllers.launch">
+  <include file="$(find panda_sim_controllers)/launch/panda_control_simple.launch">
       <arg name="gui"               value="$(arg gui)" />
       <arg name="ns"                value="$(arg ns)" />
       <arg name="load_gripper"      value="$(arg load_gripper)" />
@@ -130,24 +113,5 @@
   </include>
   <!-- --> 
 
-  <group if="$(eval arg('use_custom_action_servers') == true)">
-    <node name="joint_trajectory_server_emulator" pkg="panda_sim_custom_action_server"
-	  type="start_joint_trajectory_server.py" />
-
-    <group if="$(eval arg('load_gripper') == true)">
-      <node name="gripper_action_server_emulator" pkg="panda_sim_custom_action_server"
-	    type="start_gripper_action_server.py" />
-    </group>  
-    <group if="$(eval arg('start_moveit') == true)">
-       <include file="$(find panda_sim_moveit)/launch/sim_move_group.launch">
-          <arg name="load_gripper" value="$(arg load_gripper)" />
-          <arg name="info"         value="true" />
-       </include>
-    </group>
-  </group>  
-  <group if="$(eval arg('load_demo_planning_scene') == true)">
-    <node name="demo_scene_loader" pkg="franka_moveit" type="create_demo_planning_scene.py"
-	  respawn="false" output="screen" />
-  </group> 
 
 </launch>
