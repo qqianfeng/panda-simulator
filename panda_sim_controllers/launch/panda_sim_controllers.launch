@@ -1,17 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <launch>
 
-  <!-- these are the arguments you can pass this launch file, for example paused:=true -->
-  <arg name="load_gripper" default="true"/>
-  <arg name="gui" default="false"/>
-  <arg name="ns" default="panda_simulator"/>
+  <!-- ================================================================================= -->
+  <arg name="load_gripper" default="false"/>
+  <arg name="load_hand"    default="true" />
+  <arg name="gui"          default="false"/>
+  <arg name="ns"           default="panda_simulator"/>
+  <!-- ================================================================================= -->  
+  <arg name="robot_name"   value="panda_hithand"
+       if="$(arg load_hand)"/>
+  <arg name="robot_name"   value="panda"
+       unless="$(arg load_hand)"/>
+  <!-- ================================================================================= -->  
 
-  <!-- Load joint controller configurations from YAML file to parameter server -->
-  <rosparam file="$(find panda_sim_controllers)/config/panda_sim_controllers.yaml" command="load"/>
 
+  <!-- NEED TO CHANGE THE YAML FILE Load joint controller configurations from YAML file to parameter server -->
+  <group ns="$(arg robot_name)">
+  	<rosparam file="$(find panda_sim_controllers)/config/panda_sim_controllers.yaml" command="load"/>
+  </group> <!-- END robot name namespace -->
+
+
+  <!-- ================================================================================= -->  
+  <!-- Load ROS controllers -->
   <!-- load the default "ON" controllers -->
-  <node name="controller_spawner" pkg="controller_manager" type="controller_manager" respawn="false"
-        output="screen" args="spawn
+  <node name="controller_spawner" pkg="controller_manager" type="controller_manager"
+        respawn="false" ns="$(arg robot_name)" output="screen" args="spawn
                                          panda_simulator/position_joint_position_controller
                                          panda_simulator/joint_state_controller
                                          " />
@@ -19,8 +32,8 @@
                                          position_joint_trajectory_controller
  -->
   <!-- load the default "OFF" controllers -->
-  <node name="controller_spawner_stopped" pkg="controller_manager" type="controller_manager" respawn="false"
-       output="screen" args="load
+  <node name="controller_spawner_stopped" pkg="controller_manager" type="controller_manager"
+        respawn="false" ns="$(arg robot_name)" output="screen" args="load
                                          panda_simulator/velocity_joint_velocity_controller
                                          panda_simulator/effort_joint_gravity_controller
                                          panda_simulator/effort_joint_torque_controller  
@@ -39,6 +52,6 @@
     <!-- <remap from="/joint_states" to="/$(arg ns)/joint_states" /> -->
   </node>
 
-  <node name="topic_remap" pkg="topic_tools" type="relay" args="joint_states /$(arg ns)/custom_franka_state_controller/joint_states"/>
+  <node name="topic_remap" pkg="topic_tools" type="relay" args="joint_states /$(arg robot_name)/custom_franka_state_controller/joint_states"/>
 
 </launch>
