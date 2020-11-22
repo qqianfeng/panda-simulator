@@ -101,3 +101,7 @@ install(
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
   USE_SOURCE_PERMISSIONS
 )
+# Add joint initializer
+add_executable(init_panda_pose src/init_panda_pose.cpp)
+target_link_libraries(init_panda_pose ${catkin_LIBRARIES})
+

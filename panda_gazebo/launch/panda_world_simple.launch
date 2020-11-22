@@ -39,7 +39,7 @@
                                         default=" -J panda_hithand::panda_joint1 0.000
                                                   -J panda_hithand::panda_joint2 -0.553876
                                                   -J panda_hithand::panda_joint3 0.0
-                                                  -J panda_hithand::panda_joint4 -2.0
+                                                  -J panda_hithand::panda_joint4 -2.35
                                                   -J panda_hithand::panda_joint5 0.0
                                                   -J panda_hithand::panda_joint6 1.98847
                                                   -J panda_hithand::panda_joint7 -0.785398163"/>
@@ -97,7 +97,7 @@
   <!-- Spawn urdf of the robot -->
   <node name="robot_description" pkg="gazebo_ros" type="spawn_model" 
 	args="-urdf -param robot_description -model $(arg robot_name)
-	      -robot_namespace $(arg robot_name) $(arg initial_joint_states) -unpause"
+	      -robot_namespace $(arg robot_name)"
         respawn="false" output="screen" />
 
 
@@ -122,5 +122,7 @@
 	</include>	
   </group>  
 
+  <node name="init_panda_pose" pkg="panda_gazebo" type="init_panda_pose" respawn="false"
+	output="screen"/>
 
 </launch>
