@@ -19,10 +19,9 @@
   <!--========================================================================================-->
   <arg name="arm_name"                  default="panda"/>
   <arg name="hand_name"                 default="hithand"/>
-  <arg name="robot_name"                default="panda_hithand"/>
-  <arg name="no_end_effector"           default="true"/>
+  <arg name="no_end_effector"           default="false"/>
   <arg name="load_gripper"              default="false"/> 
-  <arg name="load_hand"                 default="false" /> 
+  <arg name="load_hand"                 default="true" /> 
   <arg name="use_custom_action_servers" default="false" />
   <arg name="start_moveit"              default="false"/>
   <arg name="load_demo_planning_scene"  default="false"/>
@@ -33,30 +32,34 @@
   <arg name="headless"                  default="false"/>
   <arg name="debug"                     default="false"/>
 
-  <arg name="ns"                        default="panda_simulator"/>
   <arg name="static"                    default="true"/>
 
   <arg name="load_gazebo"               default="true"/>
   <arg name="initial_joint_states"
-                                        default=" -J panda::panda_joint1 0.000
-                                                  -J panda::panda_joint2 -0.553876
-                                                  -J panda::panda_joint3 0.0
-                                                  -J panda::panda_joint4 -2.5361
-                                                  -J panda::panda_joint5 0.0
-                                                  -J panda::panda_joint6 1.98847
-                                                  -J panda::panda_joint7 -0.785398163"/>
+                                        default=" -J panda_hithand::panda_joint1 0.000
+                                                  -J panda_hithand::panda_joint2 -0.553876
+                                                  -J panda_hithand::panda_joint3 0.0
+                                                  -J panda_hithand::panda_joint4 -2.0
+                                                  -J panda_hithand::panda_joint5 0.0
+                                                  -J panda_hithand::panda_joint6 1.98847
+                                                  -J panda_hithand::panda_joint7 -0.785398163"/>
   <arg name="intel_realsense"          default="true"/>
   <!-- ================================================================================== -->
-
+  <!-- Set robot name based on end-effector (different based on actuated/non-actuated EE) -->
+  <arg name="robot_name" if="$(arg load_hand)"
+       value="$(arg arm_name)_$(arg hand_name)"/>
+  <arg name="robot_name" unless="$(arg load_hand)"
+       value="$(arg arm_name)"/>
+  <!-- ================================================================================== -->
 
   <!-- Launch an empty world -->
   <include if="$(arg load_gazebo)" file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name"   value="$(find panda_gazebo)/worlds/panda.world"/>
-    <arg name="debug"        value="$(arg debug)" />
-    <arg name="gui"          value="$(arg gui)" />
-    <arg name="paused"       value="$(arg paused)"/>
-    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
-    <arg name="headless"     value="$(arg headless)"/>
+	<arg name="world_name"   value="$(find panda_gazebo)/worlds/panda.world"/>
+	<arg name="debug"        value="$(arg debug)" />
+	<arg name="gui"          value="$(arg gui)" />
+	<arg name="paused"       value="$(arg paused)"/>
+	<arg name="use_sim_time" value="$(arg use_sim_time)"/>
+	<arg name="headless"     value="$(arg headless)"/>
   </include>
 
 
@@ -93,7 +96,8 @@
 
   <!-- Spawn urdf of the robot -->
   <node name="robot_description" pkg="gazebo_ros" type="spawn_model" 
-	args="-urdf -param robot_description -model panda $(arg initial_joint_states)"
+	args="-urdf -param robot_description -model $(arg robot_name)
+	      -robot_namespace $(arg robot_name) $(arg initial_joint_states) -unpause"
         respawn="false" output="screen" />
 
 
@@ -104,14 +108,19 @@
 	args="0 0 0 0 0 0 1 world base 100" />
 
 
-  <!-- Controllers -->
+  <!-- ++++++++++++++++++ Controllers +++++++++++++++++++ -->
+  <!-- Panda arm controller -->
   <include file="$(find panda_sim_controllers)/launch/panda_control_simple.launch">
-      <arg name="gui"               value="$(arg gui)" />
-      <arg name="ns"                value="$(arg ns)" />
-      <arg name="load_gripper"      value="$(arg load_gripper)" />
-      <arg name="load_hand"         value="$(arg load_hand)" />
+	<arg name="gui"               value="$(arg gui)" />
+	<arg name="load_gripper"      value="$(arg load_gripper)" />
+	<arg name="load_hand"         value="$(arg load_hand)" />
   </include>
-  <!-- --> 
+  <!-- Hithand controller -->
+  <group if="$(arg load_hand)">
+	<include file="$(find hithand_control)/launch/hithand_control.launch">
+		<arg name="attached"          value="$(arg load_hand)" />
+	</include>	
+  </group>  
 
 
 </launch>
