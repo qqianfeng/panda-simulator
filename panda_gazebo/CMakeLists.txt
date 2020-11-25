@@ -104,4 +104,10 @@ install(
 # Add joint initializer
 add_executable(init_panda_pose src/init_panda_pose.cpp)
 target_link_libraries(init_panda_pose ${catkin_LIBRARIES})
+# Add joint state splitter
+add_executable(joint_state_splitter src/joint_state_splitter.cpp)
+target_link_libraries(joint_state_splitter ${catkin_LIBRARIES})
+# Add joint state wrapper
+add_executable(robot_joint_wrapper src/robot_joint_wrapper.cpp)
+target_link_libraries(robot_joint_wrapper ${catkin_LIBRARIES})
 
