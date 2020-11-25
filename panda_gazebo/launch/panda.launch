@@ -137,7 +137,8 @@
   <node name="init_panda_pose" pkg="panda_gazebo" type="init_panda_pose" respawn="false"
 	output="screen"/>
 
-  <!-- Gazebo to Rviz -->
-  <include file="$(find gazebo2rviz)/launch/gazbeo2rviz.launch"/>
+
+  <!--<node name="relay_joint_states" pkg="topic_tools" type="relay" 
+        args="/panda_hithand/joint_states /joint_states" respawn="false" output="screen"/>-->
 
 </launch>
