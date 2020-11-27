@@ -138,6 +138,6 @@
 	output="screen"/>
 
   <!-- Gazebo to Rviz -->
-  <include file="$(find gazebo2rviz)/launch/gazbeo2rviz.launch"/>
+  <!--<include file="$(find gazebo2rviz)/launch/gazbeo2rviz.launch"/>-->
 
 </launch>
