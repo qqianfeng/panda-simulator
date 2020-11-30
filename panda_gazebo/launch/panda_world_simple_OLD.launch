@@ -137,6 +137,20 @@
   <node name="init_panda_pose" pkg="panda_gazebo" type="init_panda_pose" respawn="false"
 	output="screen"/>
 
+  <!-- Register depth and RGB data -->
+  <group if="$(arg intel_realsense)">
+    <node pkg="nodelet" type="nodelet" name="standalone_nodelet" args="manager" output="screen"/>
+    <node pkg="nodelet" type="nodelet" name="register_depth" args="load depth_image_proc/register standalone_nodelet" output="screen" respawn="false">
+      <remap from="/rgb/camera_info" to="/camera/color/camera_info" />
+      <remap from="/depth/camera_info" to="/camera/depth/camera_info" />
+      <remap from="/depth/image_rect" to="/camera/depth/image_raw" />
+    </node>
+    <node pkg="nodelet" type="nodelet" name="cloudify" args="load depth_image_proc/point_cloud_xyzrgb standalone_nodelet" output="screen" respawn="false">
+      <remap from="/rgb/camera_info" to="/camera/color/camera_info" />
+      <remap from="/rgb/image_rect_color" to="/camera/color/image_raw" />
+      <param name="queue_size" value="10" />
+    </node>
+  </group>
   <!-- Gazebo to Rviz -->
   <!--<include file="$(find gazebo2rviz)/launch/gazbeo2rviz.launch"/>-->
 
