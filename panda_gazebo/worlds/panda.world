@@ -9,10 +9,10 @@
       <uri>model://sun</uri>
     </include>
 
-    <include>
+    <!--<include>
       <uri>model://006_mustard_bottle</uri>
       <pose>1 0 0 0 0 0</pose>
-    </include>
+    </include> -->
 
     <physics type="ode">
       <real_time_update_rate>1000.0</real_time_update_rate>

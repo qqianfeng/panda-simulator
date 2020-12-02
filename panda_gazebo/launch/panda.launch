@@ -36,7 +36,8 @@
 
   <arg name="load_gazebo"               default="true"/>
 
-  <arg name="intel_realsense"          default="true"/>
+  <arg name="intel_realsense"           default="true"/>
+  <arg name="object_datasets_folder"    default="/home/vm/object_datasets"/>
   <!-- ================================================================================== -->
   <!-- Set robot name based on end-effector (different based on actuated/non-actuated EE) -->
   <arg name="robot_name" if="$(arg load_hand)"
@@ -70,6 +71,7 @@
 	intel_realsense:=$(arg intel_realsense)
 	--inorder"/>
 
+  <param name="object_datasets_folder"   value="$(arg object_datasets_folder)"/>
   <param name="robot_name" type="str"    value="$(arg robot_name)"/>
   <param name="hand_name"  type="str"    value="hithand"/>
   <param name="/arm/root_name"           value="panda_link0"/>
