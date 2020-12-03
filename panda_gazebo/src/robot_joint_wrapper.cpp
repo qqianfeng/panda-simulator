@@ -134,6 +134,9 @@ int main(int argc,char* argv[])
   n_private.param<std::string>("publish_prefix", publish_prefix,"/panda");
   n_private.param<std::string>("jnt_cmd_topic", jnt_cmd_topic, listen_prefix + "/joint_cmd");
 
+  cout << "Listen prefix:" << listen_prefix;
+  cout << "Publish prefix:" << publish_prefix;
+
   // Setup subscribers
   stringstream topic_name;
   topic_name << listen_prefix << "/control_type";
