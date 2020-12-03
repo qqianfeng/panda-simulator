@@ -1,4 +1,4 @@
-// Subscribes to a single joint state command and splits to individual robot joint states- lbr4 and the remaining to the hand_prefix namespace
+// Subscribes to a single joint state command and splits to individual robot joint states- panda and the remaining to the hithand namespace
 
 #include <ros/ros.h>
 #include <sensor_msgs/JointState.h>
