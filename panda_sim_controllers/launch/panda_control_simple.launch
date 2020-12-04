@@ -37,14 +37,14 @@
   <!-- Load ROS controllers -->
   <node name="panda_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" 
         ns="$(arg robot_name)" output="screen" args="joint_state_controller
-					      panda_j1_position_controller
-					      panda_j2_position_controller
-					      panda_j3_position_controller
-					      panda_j4_position_controller
-					      panda_j5_position_controller
-					      panda_j6_position_controller
-					      panda_j7_position_controller
-					      "/>
+					             panda_j1_position_controller
+					             panda_j2_position_controller
+					             panda_j3_position_controller
+					             panda_j4_position_controller
+					             panda_j5_position_controller
+					             panda_j6_position_controller
+					             panda_j7_position_controller
+					                                         "/>
 
 
   <!-- convert joint states to TF transforms -->
