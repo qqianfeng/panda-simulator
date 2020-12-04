@@ -38,6 +38,7 @@
 
   <arg name="intel_realsense"           default="true"/>
   <arg name="object_datasets_folder"    default="/home/vm/object_datasets"/>
+  <arg name="launch_rosbridge"          default="true"/>
   <!-- ================================================================================== -->
   <!-- Set robot name based on end-effector (different based on actuated/non-actuated EE) -->
   <arg name="robot_name" if="$(arg load_hand)"
@@ -159,5 +160,10 @@
   <!-- Gazebo to Rviz -->
   <!--<include file="$(find gazebo2rviz)/launch/gazbeo2rviz.launch"/>-->
 
+  <!-- Launch Rosbridge and tf2_web_publisher to talk to roslibpy and python3 -->
+  <group if="$(arg launch_rosbridge)">
+     <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch"/>
+     <node pkg="tf2_web_republisher" type="tf2_web_republisher" name="tf2_web_republisher"/>     
+  </group>
 
 </launch>
