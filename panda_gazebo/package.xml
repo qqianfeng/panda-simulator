@@ -40,8 +40,8 @@
 
   <build_depend>effort_controllers</build_depend>
 
-  <build-depend>rosbridge_server</build_depend>
-  <build-depend>tf2_web_republisher</build_depend>
+  <build_depend>rosbridge_server</build_depend>
+  <build_depend>tf2_web_republisher</build_depend>
 
   <run_depend>cv_bridge</run_depend>
   <run_depend>gazebo</run_depend>
