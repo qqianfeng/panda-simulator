@@ -39,6 +39,7 @@
   <arg name="intel_realsense"           default="true"/>
   <arg name="object_datasets_folder"    default="/home/vm/object_datasets"/>
   <arg name="launch_rosbridge"          default="true"/>
+  <arg name="register_depth"            default="true"/> 
   <!-- ================================================================================== -->
   <!-- Set robot name based on end-effector (different based on actuated/non-actuated EE) -->
   <arg name="robot_name" if="$(arg load_hand)"
@@ -106,7 +107,7 @@
         args="0 0 0 0 0 0 1 base panda_link0 100" />
   <node name="world_to_base" pkg="tf" type="static_transform_publisher"
 	args="0 0 0 0 0 0 1 world base 100" />
-
+ 
 
   <!-- Launch Gazebo TF node-->
   <group if="$(arg gazebo_tf)">
@@ -141,7 +142,7 @@
 	output="screen"/>
 
   <!-- Register depth and RGB data -->
-  <group if="$(arg intel_realsense)">
+  <group if="$(arg register_depth)">
     <node pkg="nodelet" type="nodelet" name="standalone_nodelet" args="manager" output="screen"/>
     <node pkg="nodelet" type="nodelet" name="register_depth" args="load depth_image_proc/register standalone_nodelet" output="screen" respawn="false">
       <remap from="/rgb/camera_info" to="/camera/color/camera_info" />
@@ -165,5 +166,4 @@
      <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch"/>
      <node pkg="tf2_web_republisher" type="tf2_web_republisher" name="tf2_web_republisher"/>     
   </group>
-
 </launch>
