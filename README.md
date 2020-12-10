@@ -403,8 +403,8 @@ NOTE: Make sure to replace any occurences of `/home/vm` with the right base path
 ### Starting Procedure
 The whole system gets started in the following order. Don't be too quick with executing the commands below and execute each of them in a seperate terminal.\
 1. Start the panda_simulator \
-`roslaunch panda_gazebo panda.launch`
+`roslaunch panda_gazebo panda.launch` \
 2. Start the panda_hithand_moveit_config \
-`roslaunch panda_hithand_moveit_config panda_hithand_moveit.launch`
-3. Start the grasp_pipeline. This exposes the the grasping servers. Currently this does not do anything in and of itself. But you can for example spawn objects in Gazebo \
-`roslaunch grasp_pipeline grasp_pipeline_servers.launch`
+`roslaunch panda_hithand_moveit_config panda_hithand_moveit.launch` \
+3. Start the grasp_pipeline. This exposes the the grasping servers. Currently this does not do anything in and of itself. But you can for example spawn objects in Gazebo \ 
+`roslaunch grasp_pipeline grasp_pipeline_servers.launch` \
