@@ -10,3 +10,7 @@
     local-name: orocos_kinematics_dynamics
     uri: http://git.ar.int/deeplearn/hithand-grasp/orocos-kinematics-dynamics.git
     version: master
+-git:
+    local-name: realsense_gazebo_plugin
+    uri: http://git.ar.int/deeplearn/hithand-grasp/realsense-gazebo-plugin.git
+    version: master
