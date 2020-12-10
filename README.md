@@ -87,7 +87,7 @@ A **Gazebo simulator** for the Franka Emika Panda robot with ROS interface with 
 
 	`cd hithand_ws`
 
-	`source /opt/ros/melodic/steup.sh`
+	`source /opt/ros/melodic/setup.sh`
 
 	`catkin_init_workspace src`
 
@@ -128,7 +128,7 @@ A **Gazebo simulator** for the Franka Emika Panda robot with ROS interface with 
 	```
  
 
-2. Update dependency packages:
+2. Update dependency packages. This will install franka-panda-description, franka-ros-interface and orocos-kinematic-dynamics from the Gitlab Hithand group:
 
   
 
@@ -199,6 +199,18 @@ The simulator can be started by running:
   
 
 roslaunch panda_gazebo panda.launch
+
+  
+
+```
+
+Now you test the control by sending a command to the corresponding controller topic. E.g.
+
+```bash
+
+  
+
+rostopic pub /panda_hithand/panda_j1_position_controller/command std_msgs/Float64 "data: 0.0" 
 
   
 
