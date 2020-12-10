@@ -187,11 +187,15 @@ A **Gazebo simulator** for the Franka Emika Panda robot with ROS interface with 
 
 -  `sudo apt update && apt install -q -y build-essential git swig sudo python-future libcppunit-dev python-pip`
 
+
 -  `sudo apt update && apt install -y python-catkin-tools ros-melodic-gazebo-ros-control ros-melodic-rospy-message-converter ros-melodic-effort-controllers ros-melodic-position-controllers ros-melodic-joint-state-controller python-pip ros-melodic-moveit ros-melodic-moveit-commander ros-melodic-moveit-visual-tools`
+
 
 -  `pip install --upgrade pip`
 
+
 -  `sudo apt update && apt upgrade -y`
+
 
 -  `pip install -r requirements.txt`
 
@@ -346,29 +350,29 @@ For the entire grasping pipeline you will need more packages
 
 ### Installation
 1. Hithand ROS package
-- Clone the Hithand ROS Github package into your hithand_ws/src/ directory
+- Clone the Hithand ROS Github package into your hithand_ws/src/ directory \
 `cd hithand_ws/src`
 `git clone https://github.com/vincentmaye/hithand_ros.git`
 2. Panda Hithand Moveit Config
-- Clone the panda-hithand-moveit package also in the /src folder
-`git clone git@git.ar.int:deeplearn/hithand-grasp/panda-hithand-moveit-config.git`
+- Clone the panda-hithand-moveit package also in the /src folder \
+`git clone git@git.ar.int:deeplearn/hithand-grasp/panda-hithand-moveit-config.git` 
 3. Grasp pipeline
-- Clone the grasp-pipeline package which provides the core grasping client-server functionality.
+- Clone the grasp-pipeline package which provides the core grasping client-server functionality. \
 `git clone git@git.ar.int:deeplearn/hithand-grasp/grasp-pipeline.git`
-- This is actually a bit more effort than the previous packages. First install the python requirements
+- This is actually a bit more effort than the previous packages. First install the python requirements \
 `cd grasp-pipeline`
 `pip install -r requirements.txt`
 - For this package to work you will also have to install anaconda. Follow the instructions listed on this website
 https://docs.anaconda.com/anaconda/install/linux/
-- Once Anaconda is installed successfully you have to create a conda env called py37
+- Once Anaconda is installed successfully you have to create a conda env called py37 \
 `conda create -n py37 python=3.7`
-- Activate the conda env and install requirementes
+- Activate the conda env and install requirementes \
 `conda activate py37`
 `pip install -r requirements_py37`
 NOTE: If some of the installed packages cause errors, you have to pip uninstall them and use conda instead. Google for how to install the corresponding package using conda to find the correct command.
 4. Bashrc Modifications
-- For the whole system to work some modifications have to made to your .bashrc file. (This is analogous for other shells). 
-`vim ~/.bashrc`
+- For the whole system to work some modifications have to made to your .bashrc file. (This is analogous for other shells). \
+`vim ~/.bashrc` \
 At the bottom of the file first delete everything added by anaconda (the line is indicated by `#>>>>>> conda initialize` and append the following instead:
 NOTE: Make sure to replace any occurences of `/home/vm` with the right base path for your system
 	````bash
@@ -397,10 +401,10 @@ NOTE: Make sure to replace any occurences of `/home/vm` with the right base path
 	````
 
 ### Starting Procedure
-The whole system gets started in the following order. Don't be too quick with executing the commands below and execute each of them in a seperate terminal.
-1. Start the panda_simulator
+The whole system gets started in the following order. Don't be too quick with executing the commands below and execute each of them in a seperate terminal.\
+1. Start the panda_simulator \
 `roslaunch panda_gazebo panda.launch`
-2. Start the panda_hithand_moveit_config
+2. Start the panda_hithand_moveit_config \
 `roslaunch panda_hithand_moveit_config panda_hithand_moveit.launch`
-3. Start the grasp_pipeline. This exposes the the grasping servers. Currently this does not do anything in and of itself. But you can for example spawn objects in Gazebo
+3. Start the grasp_pipeline. This exposes the the grasping servers. Currently this does not do anything in and of itself. But you can for example spawn objects in Gazebo \
 `roslaunch grasp_pipeline grasp_pipeline_servers.launch`
