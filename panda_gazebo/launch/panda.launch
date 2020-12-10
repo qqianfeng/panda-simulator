@@ -31,6 +31,7 @@
   <arg name="gui"                       default="true" />
   <arg name="headless"                  default="false"/>
   <arg name="debug"                     default="false"/>
+  <arg name="state_rate"                default="1000"/>
 
   <arg name="static"                    default="true"/>
 
@@ -108,6 +109,12 @@
   <node name="world_to_base" pkg="tf" type="static_transform_publisher"
 	args="0 0 0 0 0 0 1 world base 100" />
  
+  <!-- convert joint states to TF transforms -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+	respawn="false" output="screen">
+      <param name="publish_frequency" value="$(arg state_rate)"/>
+      <remap from="/joint_states" to="/$(arg robot_name)/joint_states" />
+  </node>
 
   <!-- Launch Gazebo TF node-->
   <group if="$(arg gazebo_tf)">
@@ -126,7 +133,8 @@
   <!-- Hithand controller -->
   <group if="$(arg load_hand)">
 	<include file="$(find hithand_control)/launch/hithand_control.launch">
-		<arg name="attached"          value="$(arg load_hand)" />
+    <arg name="robot_name"      value="$(arg robot_name)"/>
+    <arg name="attached"        value="$(arg load_hand)" />
 	</include>	
       <!-- Relay arm and hand joint states to respective topics from combined arm+hand joint states -->
         <node name="joint_state_splitter" pkg="panda_gazebo" type="joint_state_splitter"
@@ -139,7 +147,7 @@
 
   <!-- Initialize panda pose -->
   <node name="init_panda_pose" pkg="panda_gazebo" type="init_panda_pose" respawn="false"
-	output="screen"/>
+	output="screen"/> 
 
   <!-- Register depth and RGB data -->
   <group if="$(arg register_depth)">

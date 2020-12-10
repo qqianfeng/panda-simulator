@@ -19,7 +19,7 @@
   <arg name="robot_state_topic" default="/$(arg arm_name)/robot_state"/>
   <!-- ================================================================================= -->  
   <!-- Load parameters to ROS parameter server -->
-  <rosparam file="$(find panda_sim_controllers)/config/panda_control_simple.yaml" command="load"
+  <rosparam file="$(find panda_sim_controllers)/config/panda_control_lower_gains.yaml" command="load"
 	ns="$(arg robot_name)" />
   <group ns="$(arg robot_name)">
       <param name="jnt_state_topic"    type="str" value="$(arg jnt_state_topic)"/>
@@ -37,21 +37,21 @@
   <!-- Load ROS controllers -->
   <node name="panda_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" 
         ns="$(arg robot_name)" output="screen" args="joint_state_controller
-					             panda_j1_position_controller
-					             panda_j2_position_controller
-					             panda_j3_position_controller
-					             panda_j4_position_controller
-					             panda_j5_position_controller
-					             panda_j6_position_controller
-					             panda_j7_position_controller
-					                                         "/>
+                                                    panda_j1_position_controller
+                                                    panda_j2_position_controller
+                                                    panda_j3_position_controller
+                                                    panda_j4_position_controller
+                                                    panda_j5_position_controller
+                                                    panda_j6_position_controller
+                                                    panda_j7_position_controller
+                                                                                "/>
 
 
-  <!-- convert joint states to TF transforms -->
+  <!-- convert joint states to TF transforms 
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
 	respawn="false" output="screen">
       <remap from="/joint_states" to="/$(arg robot_name)/joint_states" />
-  </node>
+  </node>-->
 
   <!-- Split joint commands to publish to individual joint effort controllers -->
   <node name="panda_joint_wrapper" pkg="panda_gazebo" type="robot_joint_wrapper"
