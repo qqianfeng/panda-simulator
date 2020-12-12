@@ -1,16 +1,16 @@
 - git:
     local-name: franka_ros_interface
-    uri: http://git.ar.int/deeplearn/hithand-grasp/franka-ros-interface.git
+    uri: http://git.ar.int/deeplearn/hithand-grasp/franka-ros-interface
     version: master
 - git:
     local-name: franka_panda_description
-    uri: http://git.ar.int/deeplearn/hithand-grasp/franka-panda-description.git
+    uri: http://git.ar.int/deeplearn/hithand-grasp/franka-panda-description
     version: agile-modifications
 - git:
     local-name: orocos_kinematics_dynamics
-    uri: http://git.ar.int/deeplearn/hithand-grasp/orocos-kinematics-dynamics.git
+    uri: http://git.ar.int/deeplearn/hithand-grasp/orocos-kinematics-dynamics
     version: master
 -git:
     local-name: realsense_gazebo_plugin
-    uri: http://git.ar.int/deeplearn/hithand-grasp/realsense-gazebo-plugin.git
+    uri: http://git.ar.int/deeplearn/hithand-grasp/realsense-gazebo-plugin
     version: master
