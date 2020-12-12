@@ -1,4 +1,3 @@
-
   
 
   
@@ -161,11 +160,13 @@ A **Gazebo simulator** for the Franka Emika Panda robot with ROS interface with 
 
 `git clone --recursive https://github.com/frankaemika/franka_ros src/franka_ros`
 
-  
+
+`cd src/franka_ros/`
+
 
 `git checkout 49e5ac1`
 
-  
+`cd ../../`  
 
 - Install missing dependencies, replace the /path/to/libfranka/build with your libfranka/build directory
 
@@ -177,7 +178,8 @@ A **Gazebo simulator** for the Franka Emika Panda robot with ROS interface with 
 
 `catkin build -DCMAKE_BUILD_TYPE=Release -DFranka_DIR:PATH=/path/to/libfranka/build`
 
-  
+- In case of error :  catkin command not found, run: 
+`sudo apt-get install python-catkin-tools`
 
 `source devel/setup.sh`
 
@@ -185,18 +187,18 @@ A **Gazebo simulator** for the Franka Emika Panda robot with ROS interface with 
 
 #### Other dependencies
 
--  `sudo apt update && apt install -q -y build-essential git swig sudo python-future libcppunit-dev python-pip`
+-  `sudo apt update && sudo apt install -q -y build-essential git swig sudo python-future libcppunit-dev python-pip`
 
 
--  `sudo apt update && apt install -y python-catkin-tools ros-melodic-gazebo-ros-control ros-melodic-rospy-message-converter ros-melodic-effort-controllers ros-melodic-position-controllers ros-melodic-joint-state-controller python-pip ros-melodic-moveit ros-melodic-moveit-commander ros-melodic-moveit-visual-tools`
+-  `sudo apt update && sudo apt install -y python-catkin-tools ros-melodic-gazebo-ros-control ros-melodic-rospy-message-converter ros-melodic-effort-controllers ros-melodic-position-controllers ros-melodic-joint-state-controller python-pip ros-melodic-moveit ros-melodic-moveit-commander ros-melodic-moveit-visual-tools`
 
 
 -  `pip install --upgrade pip`
 
 
--  `sudo apt update && apt upgrade -y`
+-  `sudo apt update && sudo apt upgrade -y`
 
-
+cd to panda-simulator repo:
 -  `pip install -r requirements.txt`
 
   
