@@ -242,7 +242,7 @@ wstool init
 
   
 
-wstool merge panda_simulator/dependencies.rosinstall
+wstool merge panda-simulator/dependencies.rosinstall
 
   
   
