@@ -36,6 +36,8 @@
   <arg name="static"                    default="true"/>
 
   <arg name="load_gazebo"               default="true"/>
+  <arg name="world_launch_file"         default="empty_world_dart.launch"/>
+
 
   <arg name="intel_realsense"           default="true"/>
   <arg name="object_datasets_folder"    default="/home/vm/object_datasets"/>
@@ -57,7 +59,13 @@
 	<arg name="paused"       value="$(arg paused)"/>
 	<arg name="use_sim_time" value="$(arg use_sim_time)"/>
 	<arg name="headless"     value="$(arg headless)"/>
-  </include>
+  </include> 
+
+
+  <!-- Launch an empty world with DART physics engine 
+  <include file="$(find panda_gazebo)/launch/$(arg world_launch_file)">
+    <arg name="gui" value="$(arg gui)"/>
+  </include>-->
 
 
   <!-- Load parameters to ROS parameter server-->
