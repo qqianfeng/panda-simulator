@@ -291,11 +291,12 @@ source /opt/ros/$ROS_DISTRO/setup.bash
 
   
 
-  
 
 catkin build # if catkin not found, install catkin tools (apt install python-catkin-tools)
 
-  
+# NOTE: If the previous catkin build command gave an error related to the franka_ros_interface
+# please try building with the -DFranka_DIR:PATH flag specified (attention replace path to libfranka/build below)
+# catkin build -DFranka_DIR:PATH=/path/to/your/libfranka/build
 
   
 
