@@ -59,7 +59,7 @@
 	<arg name="paused"       value="$(arg paused)"/>
 	<arg name="use_sim_time" value="$(arg use_sim_time)"/>
 	<arg name="headless"     value="$(arg headless)"/>
-  <arg name="verbose"      value="true"/>
+  <arg name="verbose"      value="false"/>
   </include> 
 
 
@@ -146,7 +146,7 @@
     <arg name="attached"        value="$(arg load_hand)" />
 	</include>	
       <!-- Relay arm and hand joint states to respective topics from combined arm+hand joint states -->
-        <node name="joint_state_splitter" pkg="panda_gazebo" type="joint_state_splitter"
+    <node name="joint_state_splitter" pkg="panda_gazebo" type="joint_state_splitter"
 	      respawn="false" output="screen">
 	  <param name="listen_prefix" value="$(arg robot_name)"/> <!-- Split these joint states -->
 	  <param name="hand_prefix"   value="$(arg hand_name)"/>  <!-- Relay hand joint states -->

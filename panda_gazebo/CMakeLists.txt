@@ -11,15 +11,17 @@ find_package(catkin
     franka_core_msgs
     realtime_tools
     roscpp
+    rospy
     roslint
     std_msgs
+    sensor_msgs
     kdl_parser
     tf_conversions
     orocos_kdl
     panda_sim_controllers
     panda_sim_custom_action_server
 )
-
+catkin_python_setup()
 # Depend on system install of Gazebo
 find_package(GAZEBO REQUIRED)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
@@ -33,6 +35,7 @@ catkin_package(
   franka_core_msgs
   realtime_tools
   roscpp
+  rospy
   kdl_parser
   tf_conversions
   panda_sim_controllers
@@ -108,6 +111,6 @@ target_link_libraries(init_panda_pose ${catkin_LIBRARIES})
 add_executable(joint_state_splitter src/joint_state_splitter.cpp)
 target_link_libraries(joint_state_splitter ${catkin_LIBRARIES})
 # Add joint state wrapper
-add_executable(robot_joint_wrapper src/robot_joint_wrapper.cpp)
-target_link_libraries(robot_joint_wrapper ${catkin_LIBRARIES})
+#add_executable(robot_joint_wrapper src/robot_joint_wrapper.cpp)
+#target_link_libraries(robot_joint_wrapper ${catkin_LIBRARIES})
 

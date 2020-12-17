@@ -56,11 +56,11 @@
   <!-- Split joint commands to publish to individual joint effort controllers -->
   <node name="panda_joint_wrapper" pkg="panda_gazebo" type="robot_joint_wrapper.py"
         respawn="false" output="screen">
-    <param name="listen_prefix"     type="str" value="$(arg arm_name)"/>
-    <param name="publish_prefix"    type="str" value="$(arg robot_name)"/>
-    <param name="control_method"    type="str" value="p"/>
-    <param name="jnt_cmd_topic"     type="str" value="$(arg jnt_cmd_topic)"/>
-    <param name="control_rate"      type="int" value="$(arg control_rate)"/>
+    <param name="listen_prefix"       type="str" value="$(arg arm_name)"/>    
+    <param name="publish_prefix"      type="str" value="$(arg robot_name)"/>
+    <param name="control_method"      type="str" value="p"/>
+    <param name="joint_command_topic" type="str" value="$(arg jnt_cmd_topic)"/>
+    <param name="control_rate"        type="int" value="$(arg control_rate)"/>
   </node>
 
 </launch>

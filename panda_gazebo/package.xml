@@ -29,7 +29,9 @@
   <build_depend>libgazebo9-dev</build_depend>
   <build_depend>realtime_tools</build_depend>
   <build_depend>roscpp</build_depend>
+  <build_depend>rospy</build_depend>
   <build_depend>std_msgs</build_depend>
+  <build_depend>sensor_msgs</build_depend>
   <build_depend>kdl_parser</build_depend>
   <build_depend>tf_conversions</build_depend>
   <build_depend>roslint</build_depend>
@@ -53,8 +55,10 @@
   <run_depend>image_transport</run_depend>
   <run_depend>realtime_tools</run_depend>
   <run_depend>roscpp</run_depend>
+  <run_depend>rospy</run_depend>
   <run_depend>franka_panda_description</run_depend>
   <run_depend>std_msgs</run_depend>
+  <run_depend>sensor_msgs</run_depend>
   <run_depend>kdl_parser</run_depend>
   <run_depend>tf_conversions</run_depend>
   <run_depend>panda_hardware_interface</run_depend>

@@ -1,7 +1,8 @@
-#!/usr/bin/env
+#!/usr/bin/env python
 import rospy
 from sensor_msgs.msg import JointState
 from std_msgs.msg import Float64
+import time
 
 panda_joints = [
     "panda_j1", "panda_j2", "panda_j3", "panda_j4", "panda_j5", "panda_j6",
@@ -19,11 +20,14 @@ class RobotJointWrapper:
     joint control topics. On the command topic only the joint positions or efforts or velocities have to be specified, not the joint names, since the joints names are hardcoded in this script.
     """
     def __init__(self):
+        rospy.init_node('robot_joint_wrapper')
+        rospy.loginfo('Robot joint wrapper node started.')
         self.publishers_init_flag = False
         self.control_rate = rospy.get_param('~control_rate')
         rospy.loginfo("I heard the control rate: %d" % self.control_rate)
         self.publish_prefix = rospy.get_param('~publish_prefix')
         self.listen_prefix = rospy.get_param('~listen_prefix')
+        self.command_topic = rospy.get_param('~joint_command_topic')
         self.control_method = rospy.get_param('~control_method')
         self.check_control_method()
 
@@ -38,12 +42,14 @@ class RobotJointWrapper:
 
         self.init_control_command_publishers()
 
-        listened_joint_command_topic = '/' + 'listen_prefix' + 'joint_cmd'
+        listened_joint_command_topic = '/' + self.listen_prefix + '/joint_cmd'
         self.joint_command_subscriber = rospy.Subscriber(
             listened_joint_command_topic,
             JointState,
             self.callback_listened_joint_command,
             queue_size=100)
+        self.curr_time = None
+        self.prev_time = None
 
     def init_control_command_publishers(self):
         """ Builds a list with the publishers for the individual joint control topics.
@@ -72,6 +78,11 @@ class RobotJointWrapper:
     def callback_listened_joint_command(self, joint_command):
         """ This function listenes to the control command on the robot/joint_cmd topic splits the command and publishes it to individual topics.
         """
+        self.curr_time = time.time()
+        if self.prev_time is not None:
+            diff = self.curr_time - self.prev_time
+            print(diff)
+        self.prev_time = self.curr_time
         if self.publishers_init_flag:
             # First check that the command has the right length.
             if (len(joint_command.position) != self.number_of_joints) and (len(
