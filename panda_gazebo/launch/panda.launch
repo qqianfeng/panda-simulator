@@ -41,7 +41,7 @@
 
   <arg name="intel_realsense"           default="true"/>
   <arg name="object_datasets_folder"    default="/home/vm/object_datasets"/>
-  <arg name="launch_rosbridge"          default="true"/>
+  <arg name="launch_rosbridge"          default="false"/>
   <arg name="register_depth"            default="true"/> 
   <!-- ================================================================================== -->
   <!-- Set robot name based on end-effector (different based on actuated/non-actuated EE) -->
@@ -59,6 +59,7 @@
 	<arg name="paused"       value="$(arg paused)"/>
 	<arg name="use_sim_time" value="$(arg use_sim_time)"/>
 	<arg name="headless"     value="$(arg headless)"/>
+  <arg name="verbose"      value="true"/>
   </include> 
 
 
