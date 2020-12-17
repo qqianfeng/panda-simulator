@@ -18,7 +18,7 @@ map<string, ros::Publisher> joint_pub_;
 vector<string> joint_names_;
 
 vector<string> panda_joint_names {"panda_j1", "panda_j2", "panda_j3", "panda_j4", "panda_j5", "panda_j6", "panda_j7"};
-vector<string> hithand_joint_names {"thumb0", "thumb1", "thumb2", "thumb3", "index0", "index1", "index2", "index3",  "middle0",  "middle1",  "middle2",  "middle3",  "ring0",  "ring1",  "ring2",  "ring3",  "little0",  "little1",  "little2",  "little3",};
+vector<string> hithand_joint_names {"thumb0", "thumb1", "thumb2", "thumb3", "index0", "index1", "index2", "index3",  "middle0",  "middle1",  "middle2",  "middle3",  "ring0",  "ring1",  "ring2",  "ring3",  "little0",  "little1",  "little2",  "little3"};
 
 // Listen to: /hithand/joint_cmd , then split this command and publish to /hithand/middle1_position_controller/command
 
@@ -142,8 +142,8 @@ int main(int argc,char* argv[])
   listen_prefix.insert(0, 1, '/');
   publish_prefix.insert(0, 1, '/');
 
-  //cout << "Listen prefix:" << listen_prefix;
-  //cout << "\n Publish prefix:" << publish_prefix;
+  cout << "Listen prefix:" << listen_prefix;
+  cout << "\n Publish prefix:" << publish_prefix;
 
   // this section just assigns the hard coded panda/hithand joint names
   if(publish_prefix == "/panda_hithand"){
@@ -197,6 +197,7 @@ int main(int argc,char* argv[])
         if(control_method_ == 'p')
         {
           pub_name << joint_names_[i] << "_position_controller/command";
+          cout << pub_name.str() << joint_names_[i] << "_position_controller/command";
         }
         else if(control_method_ == 'v')
         {
