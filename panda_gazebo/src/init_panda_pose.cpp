@@ -46,7 +46,7 @@ int main(int argc, char **argv){
     ros::Duration(3).sleep();
     j5_pub.publish(j5_msg);
     ros::Duration(3).sleep();
-    //j7_pub.publish(j7_msg);
+    j7_pub.publish(j7_msg);
     //ros::spinOnce();
     //loop_rate.sleep();
     ++count;
