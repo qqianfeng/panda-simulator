@@ -12,28 +12,33 @@ int main(int argc, char **argv){
     ros::Publisher j5_pub = n.advertise<std_msgs::Float64>("panda_hithand/panda_j5_position_controller/command", 100);
     ros::Publisher j6_pub = n.advertise<std_msgs::Float64>("panda_hithand/panda_j6_position_controller/command", 100);
     ros::Publisher j7_pub = n.advertise<std_msgs::Float64>("panda_hithand/panda_j7_position_controller/command", 100);
+
+    ros::Publisher thumb0_pub = n.advertise<std_msgs::Float64>("panda_hithand/thumb0_position_controller/command", 100);
     
     // ROS setting
     ros::Rate loop_rate(1);
     int count = 0;
     // Initial pose
     std_msgs::Float64 j1_msg;
-    j1_msg.data = -1.5708;
+    j1_msg.data = 0;
     std_msgs::Float64 j2_msg;
-    j2_msg.data = -0.553876;
+    j2_msg.data = 0;
     std_msgs::Float64 j3_msg;
     j3_msg.data = 0;
     std_msgs::Float64 j4_msg;
-    j4_msg.data = -2.5361;
+    j4_msg.data = -1;
     std_msgs::Float64 j5_msg;
     j5_msg.data = 0;
     std_msgs::Float64 j6_msg;
     j6_msg.data =  1.98847;
     std_msgs::Float64 j7_msg;
-    j7_msg.data = -0.785;
+    j7_msg.data = -1.57;
+
+    std_msgs::Float64 thumb0_msg;
+    thumb0_msg.data = -0.26;
 
     while(ros::ok() && count < 1){
-    ros::Duration(8).sleep();
+    ros::Duration(6).sleep();
     j6_pub.publish(j6_msg);
     ros::Duration(3).sleep();
     j1_pub.publish(j1_msg);
@@ -47,6 +52,8 @@ int main(int argc, char **argv){
     j5_pub.publish(j5_msg);
     ros::Duration(3).sleep();
     j7_pub.publish(j7_msg);
+    ros::Duration(1).sleep();
+    thumb0_pub.publish(thumb0_msg);
     //ros::spinOnce();
     //loop_rate.sleep();
     ++count;
