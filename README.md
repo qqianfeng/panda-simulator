@@ -38,7 +38,7 @@ A **Gazebo simulator** for the Franka Emika Panda robot with ROS interface with 
 
   
 
-- Supports MoveIt planning and control for Franka Panda Emika robot and arm and Franka Gripper.
+- Supports MoveIt planning and control for Franka Panda Emika robot and DLR-HIT hand.
 
   
 
@@ -46,13 +46,41 @@ A **Gazebo simulator** for the Franka Emika Panda robot with ROS interface with 
 
   
 
-## Installation
+## Installation Process
 
-  
+This section guides through the whole installation process, not only for the panda_hithand_simulator but for the full grasping system. This includes 
 
-  
+- Gazebo 9 from source with DART support.
+- ROS melodic.
+- libfranka and franka-ros
+- wide range of ros-melodic and python packages
+- CUDA 10.1 and tensorflow-gpu 1.14.
 
-  
+#### Install Gazebo 9 from source
+
+The first step is to install Gazebo 9 from source. Installing from source is necessary to get full DART support, which is most suitable for grasping applications under all solvers available for Gazebo. Ideally you would have a fresh Ubuntu install or at least make sure you have no Gazebo/ ROS installed on your system as I found this to interfere with the installation process.
+
+NOTE for next step: As installation path, use the recommended /home/$USER/local and after cloning the Gazebo repository be sure to git checkout gazebo9 as building the main branch will not work.
+
+Please follow the steps outlined here CAREFULLY: [Gazebo Installation from Source][http://gazebosim.org/tutorials?tut=install_from_source&cat=install]
+
+
+
+
+#### Install CUDA 10.1 and tensorflow-gpu
+
+In order to run the ML-based grasping inference process (to find a grasping pose, given a point cloud observation) you will need tensorflow which needs CUDA 10.1
+
+Follow the steps closely in this installation script and restart your computer after installation. I would suggest first removing any NVIDIA / CUDA software from your system as I found this to interfere with the installation process.
+
+NOTE for the next step: Instead of executing wget https://developer.nvidia.com/compute/machine-learning/cudnn/secure/7.6.5.32/Production/10.1_20191031/cudnn-10.1-linux-x64-v7.6.5.32.tgz you will need to find the that file cudnn-10.1-linux-x64-v7.6.5.32.tgz on NVIDIAs website, after logging in. Running this command will fail, because you need to authorise with NVIDIA first.
+
+
+[CUDA 10.1 Installation][https://gist.github.com/vincentmaye/090159c493adbf6b3d8f39329c78d12c]
+
+After completing the CUDA installation and verifying via nvidia-smi and nvcc -V proceed with:
+
+pip install tensorflow-gpu==1.14
 
 #### Installing Franka Emika Software
 
@@ -66,137 +94,21 @@ A **Gazebo simulator** for the Franka Emika Panda robot with ROS interface with 
 
   
 
-- Remove any existing libfranka
-
-  
-
-`sudo apt remove "*libfranka*"`
-
-  
-
-- Install dependencies
-
-  
-
-`sudo apt install build-essential cmake git libpoco-dev libeigen3-dev`
-
-  
-
-- Clone the source code
-
-  
-
-`git clone --recursive https://github.com/frankaemika/libfranka`
-
-  
-
-`cd libfranka`
-
-  
-
-- Git checkout version 0.6.0
-
-  
-
-`git checkout 2b99ab9`
-
-  
-
-`git submodule update`
-
-  
-
-- In the source directory, create a build directory and run CMake
-
-  
-
-`mkdir build`
-
-  
-
-`cd build`
-
-  
-
-`cmake -DCMAKE_BUILD_TYPE=Release ..`
-
-  
-
-`cmake --build .`
-
-  
-
-2. Install and build Franka-ROS v0.6.0
-
-  
-
-- Create a catkin workspace
-
-  
-
-`cd /path/to/desired/folder`
-
-  
-
-`mkdir -p hithand_ws/src`
-
-  
-
-`cd hithand_ws`
-
-  
-
-`source /opt/ros/melodic/setup.sh`
-
-  
-
-`catkin_init_workspace src`
-
-  
-
-- Clone franka_ros from Github and checkout correct version
-
-  
-
-`git clone --recursive https://github.com/frankaemika/franka_ros src/franka_ros`
-
-
-`cd src/franka_ros/`
-
-
-`git checkout 49e5ac1`
-
-`cd ../../`  
-
-- Install missing dependencies, replace the /path/to/libfranka/build with your libfranka/build directory
-
-  
-
-`rosdep install --from-paths src --ignore-src --rosdistro melodic -y --skip-keys libfranka`
-
-  
-
-`catkin build -DCMAKE_BUILD_TYPE=Release -DFranka_DIR:PATH=/path/to/libfranka/build`
-
-- In case of error :  catkin command not found, run: 
-`sudo apt-get install python-catkin-tools`
-
-`source devel/setup.sh`
+Due to recent updates this step became really easy and works with the binaries of libfranka and franka-ros.
 
   
 
 #### Other dependencies
 
--  `sudo apt update && sudo apt install -q -y build-essential git swig sudo python-future libcppunit-dev python-pip`
+-  `sudo apt-get update && sudo apt-get install -q -y build-essential git swig sudo python-future libcppunit-dev python-pip`
 
 
--  `sudo apt update && sudo apt install -y python-catkin-tools ros-melodic-gazebo-ros-control ros-melodic-rospy-message-converter ros-melodic-effort-controllers ros-melodic-position-controllers ros-melodic-joint-state-controller python-pip ros-melodic-moveit ros-melodic-moveit-commander ros-melodic-moveit-visual-tools ros-melodic-tf2-sensor-msgs ros-melodic-rosbridge-server ros-melodic-tf2-web-republisher ros-melodic-ros-control ros-melodic-moveit ros-melodic-ros-numpy ros-melodic-trac-ik-python`
-
+-  `sudo apt-get update && sudo apt-get install -y python-catkin-tools ros-melodic-gazebo-ros-control ros-melodic-rospy-message-converter ros-melodic-effort-controllers ros-melodic-position-controllers ros-melodic-joint-state-controller python-pip ros-melodic-moveit ros-melodic-moveit-commander ros-melodic-moveit-visual-tools ros-melodic-tf2-sensor-msgs ros-melodic-rosbridge-server ros-melodic-tf2-web-republisher ros-melodic-ros-control ros-melodic-moveit ros-melodic-ros-numpy ros-melodic-trac-ik-python ros-melodic-image-proc ros-melodic-image-pipeline`
 
 -  `pip install --upgrade pip`
 
 
--  `sudo apt update && sudo apt upgrade -y`
+-  `sudo apt-get update && sudo apt-get upgrade -y`
 
 cd to panda-simulator repo:
 -  `pip install -r requirements.txt`
@@ -292,7 +204,7 @@ source /opt/ros/$ROS_DISTRO/setup.bash
   
 
 
-catkin build # if catkin not found, install catkin tools (apt install python-catkin-tools)
+catkin build # if catkin not found, install catkin tools (apt-get install python-catkin-tools)
 
 # NOTE: If the previous catkin build command gave an error related to the franka_ros_interface
 # please try building with the -DFranka_DIR:PATH flag specified (attention replace path to libfranka/build below)
@@ -402,6 +314,11 @@ NOTE: Make sure to replace any occurences of `/home/vm` with the right base path
 
 	export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/home/vm/object_datasets/ycb/models
 	````
+
+Finally apply find /home/vm/hand_ws/src -type f -iname "*.py" -exec chmod +x {} \;
+ to make all python scripts executable and 
+ find /home/vm/hand_ws/src -type f -iname "*.cpp" -exec chmod +x {} \;
+
 
 ### Starting Procedure
 The whole system gets started in the following order. Don't be too quick with executing the commands below and execute each of them in a seperate terminal.
