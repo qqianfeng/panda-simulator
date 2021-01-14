@@ -21,7 +21,7 @@ catkin_pkg_modules == 0.4.23
 # panda_simulator/panda_simulator_examples/scripts/move_robot.py: 5
 # panda_simulator/panda_simulator_examples/scripts/task_space_control_using_sim_only.py: 47
 # panda_simulator/panda_simulator_examples/scripts/task_space_control_with_fri.py: 56
-numpy == 1.13.3
+numpy == 1.16.6
 
 # panda_simulator/panda_simulator_examples/scripts/task_space_control_using_sim_only.py: 46
 # panda_simulator/panda_simulator_examples/scripts/task_space_control_with_fri.py: 55
