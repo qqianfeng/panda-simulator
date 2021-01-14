@@ -52,7 +52,7 @@
   <!-- ================================================================================== -->
 
   <!-- Launch an empty world -->
-  <include if="$(arg load_gazebo)" file="$(find gazebo_ros)/launch/empty_world.launch">
+  <!-- <include if="$(arg load_gazebo)" file="$(find gazebo_ros)/launch/empty_world.launch">
 	<arg name="world_name"   value="$(find panda_gazebo)/worlds/panda.world"/>
 	<arg name="debug"        value="$(arg debug)" />
 	<arg name="gui"          value="$(arg gui)" />
@@ -60,13 +60,13 @@
 	<arg name="use_sim_time" value="$(arg use_sim_time)"/>
 	<arg name="headless"     value="$(arg headless)"/>
   <arg name="verbose"      value="false"/>
-  </include> 
+  </include>  -->
 
 
-  <!-- Launch an empty world with DART physics engine 
+  <!-- Launch an empty world with DART physics engine  -->
   <include file="$(find panda_gazebo)/launch/$(arg world_launch_file)">
     <arg name="gui" value="$(arg gui)"/>
-  </include>-->
+  </include>
 
 
   <!-- Load parameters to ROS parameter server-->

@@ -9,14 +9,10 @@
       <uri>model://sun</uri>
     </include>
 
-    <include>
+    <!-- <include>
       <uri>model://006_mustard_bottle</uri>
       <pose>0.7 0 0 0 0 1.2</pose>
-    </include>
-
-    <!-- <physics type="ode">
-      <real_time_update_rate>1000.0</real_time_update_rate>
-    </physics> -->
+    </include> -->
     
     <!-- <gravity>
       0.0 0.0 -9.81
