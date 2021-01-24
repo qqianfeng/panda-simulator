@@ -38,19 +38,19 @@ int main(int argc, char **argv){
     thumb0_msg.data = -0.26;
 
     while(ros::ok() && count < 1){
-    ros::Duration(6).sleep();
+    ros::Duration(4).sleep();
     j6_pub.publish(j6_msg);
-    ros::Duration(3).sleep();
+    ros::Duration(1).sleep();
     j1_pub.publish(j1_msg);
-    ros::Duration(3).sleep();
+    ros::Duration(1).sleep();
 	j2_pub.publish(j2_msg);
-    ros::Duration(3).sleep();
+    ros::Duration(1).sleep();
     j3_pub.publish(j3_msg);
-    ros::Duration(3).sleep();
+    ros::Duration(1).sleep();
     j4_pub.publish(j4_msg);
-    ros::Duration(3).sleep();
+    ros::Duration(1).sleep();
     j5_pub.publish(j5_msg);
-    ros::Duration(3).sleep();
+    ros::Duration(1).sleep();
     j7_pub.publish(j7_msg);
     ros::Duration(1).sleep();
     thumb0_pub.publish(thumb0_msg);
