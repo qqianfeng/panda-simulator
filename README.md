@@ -85,16 +85,12 @@ pip install tensorflow-gpu==1.14
 #### Installing Franka Emika Software
 
   
-
-  
-
-1. Install and build libfranka v0.6.0 from source
-
-  
-
   
 
 Due to recent updates this step became really easy and works with the binaries of libfranka and franka-ros.
+
+Simply run:
+` sudo apt-get install ros-melodic-libfranka ros-melodic-franka-ros`
 
   
 
