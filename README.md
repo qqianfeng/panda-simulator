@@ -85,7 +85,7 @@ pip install tensorflow-gpu==1.14
 
 #### Install ROS melodic
 
-Now follow the instruction from this link:
+Now follow the instruction from this link. Be sure to choose ros-melodic-desktop and NOT ros-melodic-desktop-full:
 [ROS melodic Installation][http://wiki.ros.org/melodic/Installation/Ubuntu]
 
 
