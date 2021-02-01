@@ -82,6 +82,13 @@ After completing the CUDA installation and verifying via nvidia-smi and nvcc -V 
 
 pip install tensorflow-gpu==1.14
 
+
+#### Install ROS melodic
+
+Now follow the instruction from this link:
+[ROS melodic Installation][http://wiki.ros.org/melodic/Installation/Ubuntu]
+
+
 #### Installing Franka Emika Software
 
   
