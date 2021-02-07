@@ -3,15 +3,12 @@
   <!--========================================================================================-->
   <!-- load_gripper-->
   <!-- use_custom_action_servers-->
-  <!-- start_moveit-->
-  <!-- load_demo_planning_scene-->
   <!-- paused-->
   <!-- use_sim_time-->
   <!-- gui-->
   <!-- headless-->
   <!-- debug-->
   <!-- ns-->
-  <!-- static:               This argument fixes the robot statically to the world-->
   <!-- load_gazebo:          This argument dictates whether gazebo should be launched in this file-->
   <!-- initial_joint_states: This argument sets the initial joint states-->
   <!-- -->
@@ -22,24 +19,22 @@
   <arg name="no_end_effector"           default="false"/>
   <arg name="load_gripper"              default="false"/> 
   <arg name="load_hand"                 default="true" /> 
-  <arg name="use_custom_action_servers" default="false" />
-  <arg name="start_moveit"              default="false"/>
-  <arg name="load_demo_planning_scene"  default="false"/>
+
   <arg name="paused"                    default="false"/>
   <arg name="use_sim_time"              default="true" />
   <arg name="gui"                       default="true" />
   <arg name="headless"                  default="false"/>
   <arg name="debug"                     default="false"/>
+
   <arg name="state_rate"                default="100"/>
 
-  <arg name="static"                    default="true"/>
   <arg name="use_dart"                  default="true"/>
 
-  <arg name="intel_realsense"           default="true"/>
+  <arg name="realsense"                 default="d415"/>
   <arg name="object_datasets_folder"    default="/home/vm/object_datasets"/>
   <arg name="launch_rosbridge"          default="false"/>
   <arg name="register_depth"            default="false"/> 
-  <arg name="vis_hithand_effort"        default="true"/>
+  <arg name="vis_hithand_effort"        default="false"/>
   <arg name="vis_hithand_position"      default="false"/>
   <arg name="vis_hithand_velocity"      default="false"/>
 
@@ -102,7 +97,7 @@
 	$(find xacro)/xacro '$(find franka_panda_description)/robots/panda_arm_hand.urdf.xacro'
 	load_gripper:=$(arg load_gripper)
 	load_hand:=$(arg load_hand)
-	intel_realsense:=$(arg intel_realsense)
+	realsense:=$(arg realsense)
 	--inorder"/>
 
   <!-- Spawn urdf of the robot -->
