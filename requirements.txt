@@ -39,7 +39,7 @@ numpy_quaternion == 2020.11.2.17.0.49
 rospy == 1.14.10
 
 # panda_simulator/panda_simulator_examples/scripts/move_robot.py: 3
-sensor_msgs == 1.12.7
+#sensor_msgs == 1.12.7
 
 # panda_simulator/panda_gazebo/src/camera_transform_broadcaster.py: 3
 tf2_ros == 0.6.5
