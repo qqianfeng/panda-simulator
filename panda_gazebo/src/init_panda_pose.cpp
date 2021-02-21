@@ -35,7 +35,7 @@ int main(int argc, char **argv){
     j7_msg.data = -1.57;
 
     std_msgs::Float64 thumb0_msg;
-    thumb0_msg.data = -0.26;
+    thumb0_msg.data = 0.0;
 
     while(ros::ok() && count < 1){
     ros::Duration(4).sleep();
