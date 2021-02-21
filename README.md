@@ -157,7 +157,7 @@ wstool init
 
   
 
-wstool merge panda-simulator/dependencies.rosinstall
+wstool merge panda-simulator/dependencies.rosinstall # If this fails, just install all repositories in dependencies.rosinstal manually.
 
   
   
@@ -267,67 +267,34 @@ rostopic pub /panda_hithand/panda_j1_position_controller/command std_msgs/Float6
 For the entire grasping pipeline you will need more packages
 
 ### Installation
-1. Hithand ROS package
-- Clone the Hithand ROS Github package into your hithand_ws/src/ directory \
-`cd hithand_ws/src`
-`git clone https://github.com/vincentmaye/hithand_ros.git`
-2. Panda Hithand Moveit Config
+1. Panda Hithand Moveit Config
 - Clone the panda-hithand-moveit package also in the /src folder \
 `git clone git@git.ar.int:deeplearn/hithand-grasp/panda-hithand-moveit-config.git` 
-3. Grasp pipeline
+
+2. Grasp pipeline
 - Clone the grasp-pipeline package which provides the core grasping client-server functionality. \
 `git clone git@git.ar.int:deeplearn/hithand-grasp/grasp-pipeline.git`
 - This is actually a bit more effort than the previous packages. First install the python requirements \
 `cd grasp-pipeline`
 `pip install -r requirements.txt`
-- For this package to work you will also have to install anaconda. Follow the instructions listed on this website
-https://docs.anaconda.com/anaconda/install/linux/
-- Once Anaconda is installed successfully you have to create a conda env called py37 \
-`conda create -n py37 python=3.7`
-- Activate the conda env and install requirementes \
-`conda activate py37`
-`pip install -r requirements_py37`
-NOTE: If some of the installed packages cause errors, you have to pip uninstall them and use conda instead. Google for how to install the corresponding package using conda to find the correct command.
-4. Bashrc Modifications
+
+3. Bashrc Modifications
 - For the whole system to work some modifications have to made to your .bashrc file. (This is analogous for other shells). \
-`vim ~/.bashrc` \
-At the bottom of the file first delete everything added by anaconda (the line is indicated by `#>>>>>> conda initialize` and append the following instead:
-NOTE: Make sure to replace any occurences of `/home/vm` with the right base path for your system
-	````bash
-	# >>> conda initialize >>>                                                             
-	# !! Contents within this block are managed by 'conda init' !!                         
-	__conda_setup="$('/home/vm/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /\
-	dev/null)"
-	if [ $? -eq 0 ]; then
-	    eval "$__conda_setup"
-	#else
-	#    if [ -f "/home/vm/anaconda3/etc/profile.d/conda.sh" ]; then
-	# . "/home/vm/anaconda3/etc/profile.d/conda.sh"  # commented out by conda initialize
-	#    else
-	# export PATH="/home/vm/anaconda3/bin:$PATH"  # commented out by conda initialize
-	#    fi
-	fi
-	unset __conda_setup
-	# <<< conda initialize <<<
+`vim ~/.bashrc` 
 
-	source /opt/ros/melodic/setup.bash
-	source /home/vm/hithand_ws/devel/setup.bash
-	export LC_NUMERIC="en_US.UTF-8"
-	export ROSCONSOLE_FORMAT='[${severity}] [${time}] [${node}] [${logger}]: ${message}'
-
-	export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/home/vm/object_datasets/ycb/models
-	````
-
-Finally apply find /home/vm/hand_ws/src -type f -iname "*.py" -exec chmod +x {} \;
- to make all python scripts executable and 
- find /home/vm/hand_ws/src -type f -iname "*.cpp" -exec chmod +x {} \;
+4. Make executabe 
+- Apply  `find /home/vm/hand_ws/src -type f -iname "*.py" -exec chmod +x {} \;`
+- and 
+ `find /home/vm/hand_ws/src -type f -iname "*.cpp" -exec chmod +x {} \;`
 
 
 ### Starting Procedure
 The whole system gets started in the following order. Don't be too quick with executing the commands below and execute each of them in a seperate terminal.
 1. Start the panda_simulator \
-`roslaunch panda_gazebo panda.launch` 
+`roslaunch panda_gazebo panda_hithand.launch` 
+
 2. Start the panda_hithand_moveit_config \
 `roslaunch panda_hithand_moveit_config panda_hithand_moveit.launch` 
-3. Start the grasp_pipeline. This exposes the the grasping servers. Currently this does not do anything in and of itself. But you can for example spawn objects in Gazebo \ 
+
+3. Start the grasp_pipeline. This exposes the the grasping servers. Currently this does not do anything in and of itself. But you can for example spawn objects in Gazebo \
 `roslaunch grasp_pipeline grasp_pipeline_servers.launch` 
