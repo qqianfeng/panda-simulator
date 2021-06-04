@@ -8,7 +8,7 @@
 
   
 
-A **Gazebo simulator** for the Franka Emika Panda robot with ROS interface with the option to attach a DLR-HIT Hand II as end-effector, providing exposed **controllers** and real-time **robot state feedback** similar to the real robot when using the [*franka-ros*][franka-ros] package.
+A **Gazebo simulator** for the Franka Emika Panda robot with ROS interface with the option to attach a DLR-HIT Hand II as end-effector, providing exposed **controllers** and real-time **robot state feedback** similar to the real robot when using the *franka-ros* package.
 
   
 
@@ -20,7 +20,7 @@ A **Gazebo simulator** for the Franka Emika Panda robot with ROS interface with 
 
   
 
-- Low-level *controllers* (joint position, velocity, torque) available that can be controlled through ROS topics (including position control for gripper) or [Python API][fri-repo].
+- Low-level *controllers* (joint position, velocity, torque) available that can be controlled through ROS topics (including position control for gripper) or Python API.
 
   
 
@@ -32,7 +32,7 @@ A **Gazebo simulator** for the Franka Emika Panda robot with ROS interface with 
 
   
 
-- The [*Franka ROS Interface*][fri-repo] package (which is a ROS interface for controlling the real Panda robot) and [PandaRobot][https://github.com/justagist/panda_robot] Python API can also be used with the panda_simulator, providing kinematics and dynamics computation for the robot, and direct *sim-to-real* code transfer.
+- The *Franka ROS Interface* package (which is a ROS interface for controlling the real Panda robot) and PandaRobot Python API can also be used with the panda_simulator, providing kinematics and dynamics computation for the robot, and direct *sim-to-real* code transfer.
 
   
 
@@ -62,31 +62,32 @@ The first step is to install Gazebo 9 from source. Installing from source is nec
 
 NOTE for next step: As installation path, use the recommended /home/$USER/local and after cloning the Gazebo repository be sure to git checkout gazebo9 as building the main branch will not work.
 
-Please follow the steps outlined here CAREFULLY: [Gazebo Installation from Source][http://gazebosim.org/tutorials?tut=install_from_source&cat=install]
+Please follow the steps outlined here CAREFULLY: [Gazebo Installation from Source](http://gazebosim.org/tutorials?tut=install_from_source&cat=install)
 
 
 
 
 #### Install CUDA 10.1 and tensorflow-gpu
 
-In order to run the ML-based grasping inference process (to find a grasping pose, given a point cloud observation) you will need tensorflow which needs CUDA 10.1
+In order to run the ML-based grasping inference process you will need pytorch 1.4.0 which needs CUDA 10.1
 
 Follow the steps closely in this installation script and restart your computer after installation. I would suggest first removing any NVIDIA / CUDA software from your system as I found this to interfere with the installation process.
 
 NOTE for the next step: Instead of executing wget https://developer.nvidia.com/compute/machine-learning/cudnn/secure/7.6.5.32/Production/10.1_20191031/cudnn-10.1-linux-x64-v7.6.5.32.tgz you will need to find the that file cudnn-10.1-linux-x64-v7.6.5.32.tgz on NVIDIAs website, after logging in. Running this command will fail, because you need to authorise with NVIDIA first.
 
 
-[CUDA 10.1 Installation][https://gist.github.com/vincentmaye/090159c493adbf6b3d8f39329c78d12c]
+[CUDA 10.1 Installation](https://gist.github.com/vincentmaye/090159c493adbf6b3d8f39329c78d12c)
 
 After completing the CUDA installation and verifying via nvidia-smi and nvcc -V proceed with:
 
-pip install tensorflow-gpu==1.14
+pip install torch==1.4.0 torchvision==0.5.0
+
 
 
 #### Install ROS melodic
 
 Now follow the instruction from this link. Be sure to choose ros-melodic-desktop and NOT ros-melodic-desktop-full:
-[ROS melodic Installation][http://wiki.ros.org/melodic/Installation/Ubuntu]
+[ROS melodic Installation](http://wiki.ros.org/melodic/Installation/Ubuntu)
 
 
 #### Installing Franka Emika Software
