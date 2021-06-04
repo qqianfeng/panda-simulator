@@ -60,7 +60,9 @@ This section guides through the whole installation process, not only for the pan
 
 The first step is to install Gazebo 9 from source. Installing from source is necessary to get full DART support, which is most suitable for grasping applications under all solvers available for Gazebo. Ideally you would have a fresh Ubuntu install or at least make sure you have no Gazebo/ ROS installed on your system as I found this to interfere with the installation process.
 
-__IMPORTANT NOTE for next step__: Use the recommended `/home/$USER/local` as installation path. After cloning the Gazebo repository be sure to __git checkout gazebo9__ as building the main branch will not work.
+__IMPORTANT NOTES for the next step__: 
+1. Use the recommended `/home/$USER/local` as installation path
+2. After cloning the Gazebo repository be sure to `git checkout gazebo9` as building the main branch will not work.
 
 Please follow the steps outlined here CAREFULLY: [Gazebo Installation from Source](http://gazebosim.org/tutorials?tut=install_from_source&cat=install)
 
