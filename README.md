@@ -121,7 +121,39 @@ cd to panda-simulator repo:
 
   
   
-
+#### Clone the Hithand Grasping Group
+1. Install gitlabber
+    ```bash
+    pip3 install gitlabber
+    ```
+2. Get a personal access token from Gitlab
+    - Go to your avatar in the top right corner.
+    - Select **Edit profile**.
+    - In the left sidebar, select **Access Tokens**.
+    - Enter a name for the token.
+    - Select all scopes.
+    - Select **Create personal access token**
+    - Copy the hash of the token.
+3. Set the token as an environment variable: 
+    ```bash
+    export GITLAB_TOKEN=yourTokenHash
+    ```
+4. Set gitlab URL as environment variable:
+    ```bash
+    export GITLAB_URL=http://git.ar.int/
+    ```
+5. Create two folders at root. First 
+    ```bash
+    cd ~ && mkdir -p hand_ws/src && cd hand_ws
+    ```
+6. Copy all repositories from the "Hithand Grasp" group 
+    ```bash
+    gitlabber -i '/Deep Learning Group/Hithand Grasp**' ~/hand_ws/src
+    ```
+7. Move all repositories to src
+    ```bash
+    mv * ~/hand_ws/src && rm -rf Deep\ Learning\ Group/
+    ```
 #### Building the Package
 
   
