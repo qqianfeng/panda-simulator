@@ -69,26 +69,25 @@ Please follow the steps outlined here CAREFULLY: [Gazebo Installation from Sourc
 
 
 
-#### Install CUDA 10.1 and tensorflow-gpu
+#### Install CUDA 10.1
 
 In order to run the ML-based grasping inference process you will need pytorch 1.4.0 which needs CUDA 10.1
 
-Follow the steps closely in this installation script and restart your computer after installation. I would suggest first removing any NVIDIA / CUDA software from your system as I found this to interfere with the installation process.
+Follow the steps closely in the linked installation script and restart your computer after installation. I would suggest first removing any NVIDIA / CUDA software from your system as I found this to interfere with the installation process.
 
-__NOTE__: for the next step: Instead of executing wget https://developer.nvidia.com/compute/machine-learning/cudnn/secure/7.6.5.32/Production/10.1_20191031/cudnn-10.1-linux-x64-v7.6.5.32.tgz you will need to find the that file cudnn-10.1-linux-x64-v7.6.5.32.tgz on NVIDIAs website, after logging in. Running this command will fail, because you need to authorise with NVIDIA first.
+__NOTE__: for the next step: 
+- Instead of executing wget https://developer.nvidia.com/compute/machine-learning/cudnn/secure/7.6.5.32/Production/10.1_20191031/cudnn-10.1-linux-x64-v7.6.5.32.tgz you will need to find the that file cudnn-10.1-linux-x64-v7.6.5.32.tgz on NVIDIAs website, after logging in. Running this command will fail, because you need to authorise with NVIDIA first.
 
 
 [CUDA 10.1 Installation](https://gist.github.com/vincentmaye/090159c493adbf6b3d8f39329c78d12c)
 
-After completing the CUDA installation and verifying via nvidia-smi and nvcc -V proceed with:
-
-pip install torch==1.4.0 torchvision==0.5.0
+After completing the CUDA installation and verifying via nvidia-smi and nvcc -V
 
 
 
 #### Install ROS melodic
 
-Now follow the instruction from this link. Be sure to choose ros-melodic-desktop and NOT ros-melodic-desktop-full:
+Now follow the instruction from this link. Be sure to choose ros-melodic-desktop and **NOT** ros-melodic-desktop-full:
 [ROS melodic Installation](http://wiki.ros.org/melodic/Installation/Ubuntu)
 
 
@@ -100,7 +99,9 @@ Now follow the instruction from this link. Be sure to choose ros-melodic-desktop
 Due to recent updates this step became really easy and works with the binaries of libfranka and franka-ros.
 
 Simply run:
-` sudo apt-get install ros-melodic-libfranka ros-melodic-franka-ros`
+```bash
+ sudo apt-get install ros-melodic-libfranka ros-melodic-franka-ros
+```
 
   
 
