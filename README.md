@@ -132,6 +132,7 @@ sudo apt-get update && sudo apt-get install -q -y build-essential git swig sudo 
 
 ```bash
 sudo apt-get update && sudo apt-get install -y python-catkin-tools ros-melodic-gazebo-ros-control ros-melodic-rospy-message-converter ros-melodic-effort-controllers ros-melodic-position-controllers ros-melodic-joint-state-controller python-pip ros-melodic-moveit ros-melodic-moveit-commander ros-melodic-moveit-visual-tools ros-melodic-tf2-sensor-msgs ros-melodic-rosbridge-server ros-melodic-tf2-web-republisher ros-melodic-ros-control ros-melodic-moveit ros-melodic-trac-ik-kinematics-plugin ros-melodic-ros-numpy ros-melodic-trac-ik-python ros-melodic-image-proc ros-melodic-image-pipeline
+python3-pip
 ```
 
 ```bash
@@ -142,14 +143,6 @@ pip install --upgrade pip
 ```bash
 sudo apt-get update && sudo apt-get upgrade -y
 ```
-
-cd to panda-simulator repo:
-
-```bash
-pip install -r requirements.txt
-```
-
-  
   
 #### Clone the Hithand Grasping Group
 1. Install gitlabber
@@ -188,17 +181,6 @@ pip install -r requirements.txt
 
   
 
-1. Clone the repo:
-
-  
-
-```bash
-cd hithand_ws/src
-git clone git@git.ar.int:deeplearn/hithand-grasp/panda-simulator.git
-```
-
-  
-
 2. Update dependency packages. This will install `franka-panda-description`, `franka-ros-interface`, `orocos-kinematic-dynamics` and `gazebo-realsense-plugin` from the Gitlab Hithand group:
 
   
@@ -206,77 +188,25 @@ git clone git@git.ar.int:deeplearn/hithand-grasp/panda-simulator.git
   
 
 ```bash
-
-  
-
 wstool init
-
-  
-
 wstool merge panda-simulator/dependencies.rosinstall # If this fails, just install all repositories in dependencies.rosinstal manually.
-
-  
-  
-
 wstool up
-
-  
-
-  
-
-# use old ros-compatible version of kdl
-
-  
-
-  
 
 cd orocos_kinematics_dynamics && git checkout b35c424e77ebc5b7e6f1c5e5c34f8a4666fbf5bc
 
-  
-
-  
-
 cd ../.. && rosdep install -y --from-paths src --ignore-src --rosdistro $ROS_DISTRO
-
-  
-
-  
 
 ```
 
-  
-  
-
 3. Once the dependencies are met, the package can be installed using catkin build (preferred over catkin_make):
 
-  
-  
-
 ```bash
-
-  
-
-  
-
 source /opt/ros/$ROS_DISTRO/setup.bash
-
-  
-
-
 catkin build # if catkin not found, install catkin tools (apt-get install python-catkin-tools)
-
 # NOTE: If the previous catkin build command gave an error related to the franka_ros_interface
 # please try building with the -DFranka_DIR:PATH flag specified (attention replace path to libfranka/build below)
 # catkin build -DFranka_DIR:PATH=/path/to/your/libfranka/build
-
-  
-
 source devel/setup.bash
-
-  
-
-  
-
 ```
 
   
