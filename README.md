@@ -87,9 +87,27 @@ Make sure you have restarted your computer. Afterwards verify the cuda installat
 
 #### Install ROS melodic
 
-Now follow the instruction from this link. Be sure to choose ros-melodic-desktop and **NOT** ros-melodic-desktop-full:
-[ROS melodic Installation](http://wiki.ros.org/melodic/Installation/Ubuntu)
-
+1. ```bash
+    sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+    ```
+2. ```bash
+    sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+    ```
+3. ```bash
+    sudo apt-get update
+    ```
+4. ```bash
+    sudo apt-get install ros-melodic-desktop
+    ```
+5. ```bash
+    echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
+    source ~/.bashrc
+    ```
+6. ```bash
+    sudo apt-get install python-rosdep python-rosinstall python-rosinstall-generator python-wstool build-essential
+    sudo rosdep init
+    rosdep update
+    ```
 
 #### Installing Franka Emika Software
 
