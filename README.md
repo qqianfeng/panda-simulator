@@ -81,7 +81,7 @@ __NOTE__: for the next step:
 
 [CUDA 10.1 Installation](https://gist.github.com/vincentmaye/090159c493adbf6b3d8f39329c78d12c)
 
-After completing the CUDA installation and verifying via nvidia-smi and nvcc -V
+Make sure you have restarted your computer. Afterwards verify the cuda installation via nvidia-smi and nvcc -V
 
 
 
@@ -107,18 +107,29 @@ Simply run:
 
 #### Other dependencies
 
--  `sudo apt-get update && sudo apt-get install -q -y build-essential git swig sudo python-future libcppunit-dev python-pip`
+```bash
+sudo apt-get update && sudo apt-get install -q -y build-essential git swig sudo python-future libcppunit-dev python-pip
+```
 
 
--  `sudo apt-get update && sudo apt-get install -y python-catkin-tools ros-melodic-gazebo-ros-control ros-melodic-rospy-message-converter ros-melodic-effort-controllers ros-melodic-position-controllers ros-melodic-joint-state-controller python-pip ros-melodic-moveit ros-melodic-moveit-commander ros-melodic-moveit-visual-tools ros-melodic-tf2-sensor-msgs ros-melodic-rosbridge-server ros-melodic-tf2-web-republisher ros-melodic-ros-control ros-melodic-moveit ros-melodic-trac-ik-kinematics-plugin ros-melodic-ros-numpy ros-melodic-trac-ik-python ros-melodic-image-proc ros-melodic-image-pipeline`
+```bash
+sudo apt-get update && sudo apt-get install -y python-catkin-tools ros-melodic-gazebo-ros-control ros-melodic-rospy-message-converter ros-melodic-effort-controllers ros-melodic-position-controllers ros-melodic-joint-state-controller python-pip ros-melodic-moveit ros-melodic-moveit-commander ros-melodic-moveit-visual-tools ros-melodic-tf2-sensor-msgs ros-melodic-rosbridge-server ros-melodic-tf2-web-republisher ros-melodic-ros-control ros-melodic-moveit ros-melodic-trac-ik-kinematics-plugin ros-melodic-ros-numpy ros-melodic-trac-ik-python ros-melodic-image-proc ros-melodic-image-pipeline
+```
 
--  `pip install --upgrade pip`
+```bash
+pip install --upgrade pip
+```
 
 
--  `sudo apt-get update && sudo apt-get upgrade -y`
+```bash
+sudo apt-get update && sudo apt-get upgrade -y
+```
 
 cd to panda-simulator repo:
--  `pip install -r requirements.txt`
+
+```bash
+pip install -r requirements.txt
+```
 
   
   
@@ -164,17 +175,8 @@ cd to panda-simulator repo:
   
 
 ```bash
-
-  
-
 cd hithand_ws/src
-
-  
-
 git clone git@git.ar.int:deeplearn/hithand-grasp/panda-simulator.git
-
-  
-
 ```
 
   
