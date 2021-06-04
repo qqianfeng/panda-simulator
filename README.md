@@ -60,7 +60,7 @@ This section guides through the whole installation process, not only for the pan
 
 The first step is to install Gazebo 9 from source. Installing from source is necessary to get full DART support, which is most suitable for grasping applications under all solvers available for Gazebo. Ideally you would have a fresh Ubuntu install or at least make sure you have no Gazebo/ ROS installed on your system as I found this to interfere with the installation process.
 
-NOTE for next step: As installation path, use the recommended /home/$USER/local and after cloning the Gazebo repository be sure to git checkout gazebo9 as building the main branch will not work.
+__IMPORTANT NOTE for next step__: Use the recommended `/home/$USER/local` as installation path. After cloning the Gazebo repository be sure to __git checkout gazebo9__ as building the main branch will not work.
 
 Please follow the steps outlined here CAREFULLY: [Gazebo Installation from Source](http://gazebosim.org/tutorials?tut=install_from_source&cat=install)
 
@@ -73,7 +73,7 @@ In order to run the ML-based grasping inference process you will need pytorch 1.
 
 Follow the steps closely in this installation script and restart your computer after installation. I would suggest first removing any NVIDIA / CUDA software from your system as I found this to interfere with the installation process.
 
-NOTE for the next step: Instead of executing wget https://developer.nvidia.com/compute/machine-learning/cudnn/secure/7.6.5.32/Production/10.1_20191031/cudnn-10.1-linux-x64-v7.6.5.32.tgz you will need to find the that file cudnn-10.1-linux-x64-v7.6.5.32.tgz on NVIDIAs website, after logging in. Running this command will fail, because you need to authorise with NVIDIA first.
+__NOTE__: for the next step: Instead of executing wget https://developer.nvidia.com/compute/machine-learning/cudnn/secure/7.6.5.32/Production/10.1_20191031/cudnn-10.1-linux-x64-v7.6.5.32.tgz you will need to find the that file cudnn-10.1-linux-x64-v7.6.5.32.tgz on NVIDIAs website, after logging in. Running this command will fail, because you need to authorise with NVIDIA first.
 
 
 [CUDA 10.1 Installation](https://gist.github.com/vincentmaye/090159c493adbf6b3d8f39329c78d12c)
