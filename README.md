@@ -54,9 +54,9 @@ This section guides through the whole installation process, not only for the pan
 - ROS melodic.
 - libfranka and franka-ros
 - wide range of ros-melodic and python packages
-- CUDA 10.1 and tensorflow-gpu 1.14.
+- CUDA 10.1.
 
-#### Install Gazebo 9 from source
+#### **Install Gazebo 9 from source**
 
 The first step is to install Gazebo 9 from source. Installing from source is necessary to get full DART support, which is most suitable for grasping applications under all solvers available for Gazebo. Ideally you would have a fresh Ubuntu install or at least make sure you have no Gazebo/ ROS installed on your system as I found this to interfere with the installation process.
 
@@ -69,7 +69,7 @@ Please follow the steps outlined here CAREFULLY: [Gazebo Installation from Sourc
 
 
 
-#### Install CUDA 10.1
+#### **Install CUDA 10.1**
 
 In order to run the ML-based grasping inference process you will need pytorch 1.4.0 which needs CUDA 10.1
 
@@ -85,7 +85,7 @@ Make sure you have restarted your computer. Afterwards verify the cuda installat
 
 
 
-#### Install ROS melodic
+#### **Install ROS melodic**
 
 1. ```bash
     sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
@@ -112,18 +112,135 @@ Make sure you have restarted your computer. Afterwards verify the cuda installat
 #### Installing Franka Emika Software
 
   
-  
-
-Due to recent updates this step became really easy and works with the binaries of libfranka and franka-ros.
-
-Simply run:
-```bash
- sudo apt-get install ros-melodic-libfranka ros-melodic-franka-ros
-```
 
   
 
-#### Other dependencies
+1. Install and build libfranka v0.6.0 from source
+
+  
+
+  
+
+- Remove any existing libfranka
+
+  
+
+`sudo apt remove "*libfranka*"`
+
+  
+
+- Install dependencies
+
+  
+
+`sudo apt install build-essential cmake git libpoco-dev libeigen3-dev`
+
+  
+
+- Clone the source code
+
+  
+
+`git clone --recursive https://github.com/frankaemika/libfranka`
+
+  
+
+`cd libfranka`
+
+  
+
+- Git checkout version 0.6.0
+
+  
+
+`git checkout 2b99ab9`
+
+  
+
+`git submodule update`
+
+  
+
+- In the source directory, create a build directory and run CMake
+
+  
+
+`mkdir build`
+
+  
+
+`cd build`
+
+  
+
+`cmake -DCMAKE_BUILD_TYPE=Release ..`
+
+  
+
+`cmake --build .`
+
+  
+
+2. Install and build Franka-ROS v0.6.0
+
+  
+
+- Create a catkin workspace
+
+  
+
+`cd /path/to/desired/folder`
+
+  
+
+`mkdir -p hithand_ws/src`
+
+  
+
+`cd hithand_ws`
+
+  
+
+`source /opt/ros/melodic/setup.sh`
+
+  
+
+`catkin_init_workspace src`
+
+  
+
+- Clone franka_ros from Github and checkout correct version
+
+  
+
+`git clone --recursive https://github.com/frankaemika/franka_ros src/franka_ros`
+
+
+`cd src/franka_ros/`
+
+
+`git checkout 49e5ac1`
+
+`cd ../../`  
+
+- Install missing dependencies, replace the /path/to/libfranka/build with your libfranka/build directory
+
+  
+
+`rosdep install --from-paths src --ignore-src --rosdistro melodic -y --skip-keys libfranka`
+
+  
+
+`catkin build -DCMAKE_BUILD_TYPE=Release -DFranka_DIR:PATH=/path/to/libfranka/build`
+
+- In case of error :  catkin command not found, run: 
+`sudo apt-get install python-catkin-tools`
+
+`source devel/setup.sh`
+
+  
+
+#### **Other dependencies**
 
 ```bash
 sudo apt-get update && sudo apt-get install -q -y build-essential git swig sudo python-future libcppunit-dev python-pip
@@ -144,7 +261,7 @@ pip install --upgrade pip
 sudo apt-get update && sudo apt-get upgrade -y
 ```
   
-#### Clone the Hithand Grasping Group
+#### **Clone the Hithand Grasping Group**
 1. Install gitlabber
     ```bash
     pip3 install gitlabber
@@ -262,7 +379,7 @@ For the entire grasping pipeline you will need more packages
 `git clone git@git.ar.int:deeplearn/hithand-grasp/grasp-pipeline.git`
 - This is actually a bit more effort than the previous packages. First install the python requirements \
 `cd grasp-pipeline`
-`pip install -r requirements.txt`
+`pip install -r misc/requirements.txt`
 
 3. Bashrc Modifications
 - For the whole system to work some modifications have to made to your .bashrc file. (This is analogous for other shells). \
