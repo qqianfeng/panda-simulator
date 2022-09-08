@@ -148,7 +148,7 @@ This section guides through the whole installation process, not only for the pan
   
 
     ```bash
-    cd /path/to/desired/folde
+    cd /path/to/desired/folder
     mkdir -p hithand_ws/src
     cd hithand_ws
     source /opt/ros/melodic/setup.sh
@@ -167,22 +167,29 @@ This section guides through the whole installation process, not only for the pan
 
     cd ../../  
     ```
-- Install missing dependencies, replace the /path/to/libfranka/build with your libfranka/build directory
+- Install missing dependencies
 
   
 
     ```bash
-    catkin build franka_ros -DCMAKE_BUILD_TYPE=Release -DFranka_DIR:PATH=/
-    
-    path/to/libfranka/build
+    rosdep install --from-paths src --ignore-src --rosdistro melodic -y --skip-keys libfranka
     ```
 
-- In case of error :  catkin command not found, run: 
-    ```bash
-    sudo apt-get install python-catkin-tool
+    - In case of error `dkpg: error processing archive /var/cache/apt/archives/libomp5-7... (--unpack)`
+        ```bash
+        sudo apt-get -o Dpkg::Options::="--force-overwrite" install libomp5-7
+        ```
 
+- Install franka-ros, replace the /path/to/libfranka/build with your libfranka/build directory
+    ```bash
+    catkin build franka_ros -DCMAKE_BUILD_TYPE=Release -DFranka_DIR:PATH=/path/to/libfranka/build
     source devel/setup.sh
     ```
+
+    - In case of `error:  catkin command not found`, run: 
+        ```bash
+        sudo apt-get install python-catkin-tool
+        ```
 
   
 
@@ -258,18 +265,20 @@ This section guides through the whole installation process, not only for the pan
 1. Install orocos-kinematics
 
     ```bash
-    cd hand_ws/src
+    cd hithand_ws/src
 
     git clone git@git.ar.int:deeplearn/hithand-grasp/orocos-kinematics-dynamics.git
 
-    cd orocos_kinematics_dynamics && git checkout b35c424e77ebc5b7e6f1c5e5c34f8a4666fbf5bc
+    cd orocos-kinematics-dynamics && git checkout b35c424e77ebc5b7e6f1c5e5c34f8a4666fbf5bc
+
+    cd ../..
 
     catkin build orocos_kinematics_dynamics
  
    ```
 2. franka-ros-interface
     ```bash
-    cd hand_ws/src
+    cd hithand_ws/src
 
     git clone git@git.ar.int:deeplearn/hithand-grasp/franka-ros-interface.git
 
@@ -277,49 +286,68 @@ This section guides through the whole installation process, not only for the pan
 
     git checkout v0.6.0
 
-    catkin_build franka_ros_interface
+    cd ../..
+
+    catkin build franka_ros_interface -DFranka_DIR:PATH=/path/to/libfranka/build
     ```
 
 3. franka-panda-description
     ```bash
-    cd hand_ws/src
+    cd hithand_ws/src
 
     git clone git@git.ar.int:deeplearn/hithand-grasp/franka-panda-description.git
 
-    cd franka-panda-description
+    cd ..
 
-    catkin build franka_panda_description
+    catkin build franka_panda_description -DFranka_DIR:PATH=/path/to/libfranka/build
     ```
 
 4. Hithand ros
     ```bash
-    cd hand_ws/src
+    cd hithand_ws/src
 
     git clone git@git.ar.int:deeplearn/hithand-grasp/hithand-ros.git
 
+    cd ..
+
     catkin build hithand_control hithand_gazebo hithand_description
+    ```
+
+5. Trajectory smoothing
+    ```bash
+    cd hithand_ws/src
+
+    git clone git@git.ar.int:dev/isa/hithand-grasp/trajectory-smoothing.git
+
+    cd ..
+
+    catkin build trajectory_smoothing
     ```
 
 #### **Building the Package itself**
 
 
 Once the dependencies are met, the package can be installed using catkin build (preferred over catkin_make):
+    ```bash
+    source /opt/ros/$ROS_DISTRO/setup.bash
 
-```bash
-source /opt/ros/$ROS_DISTRO/setup.bash
+    cd hithand_ws/src
 
-catkin build panda_simulator -DFranka_DIR:PATH=/path/to/your/libfranka/build 
-# if catkin not found, install catkin tools (apt-get install python-catkin-tools)
+    git clone git@git.ar.int:dev/isa/hithand-grasp/panda-simulator.git
 
-source devel/setup.bash
-```
+    cd ..
+
+    catkin build panda_simulator -DFranka_DIR:PATH=/path/to/your/libfranka/build 
+    # if catkin not found, install catkin tools (apt-get install python-catkin-tools)
+
+    source devel/setup.bash
 
 ## Usage
 
 - The simulator can be started by running:
 
     ```bash
-    roslaunch panda_gazebo panda.launch
+    roslaunch panda_gazebo panda_hithand.launch
     ```
 
 - Now you test the control by sending a command to the corresponding controller topic. E.g.
@@ -334,9 +362,11 @@ For the entire grasping pipeline you will need more packages
 1. Panda Hithand Moveit Config\
     Clone the panda-hithand-moveit package also in the /src folder \
     ``` bash
-    cd hand_ws/src
+    cd hithand_ws/src
 
     git clone git@git.ar.int:deeplearn/hithand-grasp/panda-hithand-moveit-config.git
+
+    cd ..
 
     catkin build panda_hithand_moveit_config
     ``` 
@@ -344,28 +374,29 @@ For the entire grasping pipeline you will need more packages
 2. Grasp pipeline\
     Clone the grasp-pipeline package which provides the core grasping client-server functionality. \
     ```bash
-    cd hand_ws/src 
+    cd hithand_ws/src 
 
     git clone git@git.ar.int:deeplearn/hithand-grasp/grasp-pipeline.git
 
-    catkin build grasp_pipeline
+    cd ..
 
-    cd grasp-pipeline
+    catkin build grasp_pipeline
     
-    pip install -r misc/requirements.txt
+    pip install -r grasp-pipeline/misc/requirements.txt
     ```
 
 3. Bashrc Modifications\
-    For the whole system to work some modifications have to made to your .bashrc file. (This is analogous for other shells). 
+    For the whole system to work some modifications have to made to your .bashrc file. (This is analogous for other shells).
+    Replace /path/to/your/hithand_ws with the path to your catkin workspace.
     ```bash
-    export "/path/to/hand_ws/devel/setup.bash" >> ~/.bashrc
+    echo "source /path/to/your/hithand_ws/devel/setup.bash" >> ~/.bashrc
     ``` 
 
-4. Make executabe 
+4. Make executabe\
     ```bash
-    find /home/vm/hand_ws/src -type f -iname "*.py" -exec chmod +x {} \;
+    find /path/to/your/hithand_ws/src -type f -iname "*.py" -exec chmod +x {} \;
 
-    find /home/vm/hand_ws/src -type f -iname "*.cpp" -exec chmod +x {} \;
+    find /path/to/your/hithand_ws/src -type f -iname "*.cpp" -exec chmod +x {} \;
     ```
 
 
