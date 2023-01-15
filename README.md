@@ -34,7 +34,7 @@ This section guides through the whole installation process, not only for the pan
 
 #### **Install CUDA 10.1**
 
-- In order to run the ML-based grasping inference process you will need pytorch 1.4.0 which needs CUDA 10.1
+- In order to run the ML-based grasping inference process you will need pytorch 1.7.1 which needs CUDA 10.1
 
 - Follow the steps closely in the linked installation script and restart your computer after installation. I would suggest first removing any NVIDIA / CUDA software from your system as I found this to interfere with the installation process.
 
