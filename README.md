@@ -267,7 +267,7 @@ This section guides through the whole installation process, not only for the pan
     ```bash
     cd hithand_ws/src
 
-    git clone git@git.ar.int:deeplearn/hithand-grasp/orocos-kinematics-dynamics.git
+    git clone https://github.com/qianbot/orocos-kinematics-dynamics.git
 
     cd orocos-kinematics-dynamics && git checkout b35c424e77ebc5b7e6f1c5e5c34f8a4666fbf5bc
 
@@ -280,7 +280,7 @@ This section guides through the whole installation process, not only for the pan
     ```bash
     cd hithand_ws/src
 
-    git clone git@git.ar.int:deeplearn/hithand-grasp/franka-ros-interface.git
+    git clone https://github.com/qianbot/franka-ros-interface.git
 
     cd franka-ros-interface
 
@@ -295,7 +295,7 @@ This section guides through the whole installation process, not only for the pan
     ```bash
     cd hithand_ws/src
 
-    git clone git@git.ar.int:deeplearn/hithand-grasp/franka-panda-description.git
+    git clone https://github.com/qianbot/franka-panda-description.git
 
     cd ..
 
@@ -306,7 +306,7 @@ This section guides through the whole installation process, not only for the pan
     ```bash
     cd hithand_ws/src
 
-    git clone git@git.ar.int:deeplearn/hithand-grasp/hithand-ros.git
+    git clone https://github.com/qianbot/hithand_ros.git
 
     cd ..
 
@@ -317,7 +317,7 @@ This section guides through the whole installation process, not only for the pan
     ```bash
     cd hithand_ws/src
 
-    git clone git@git.ar.int:dev/isa/hithand-grasp/trajectory-smoothing.git
+    git clone https://github.com/qianbot/trajectory-smoothing.git
 
     cd ..
 
@@ -333,7 +333,7 @@ Once the dependencies are met, the package can be installed using catkin build (
 
     cd hithand_ws/src
 
-    git clone git@git.ar.int:dev/isa/hithand-grasp/panda-simulator.git
+    git clone https://github.com/qianbot/panda-simulator.git
 
     cd ..
 
@@ -364,7 +364,7 @@ For the entire grasping pipeline you will need more packages
     ``` bash
     cd hithand_ws/src
 
-    git clone git@git.ar.int:deeplearn/hithand-grasp/panda-hithand-moveit-config.git
+    git clone https://github.com/qianbot/panda-hithand-moveit-config.git
 
     cd ..
 
@@ -376,7 +376,7 @@ For the entire grasping pipeline you will need more packages
     ```bash
     cd hithand_ws/src 
 
-    git clone git@git.ar.int:deeplearn/hithand-grasp/grasp-pipeline.git
+    git clone https://github.com/qianbot/grasp-pipeline.git
 
     cd ..
 
