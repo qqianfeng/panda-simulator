@@ -29,7 +29,9 @@
   <build_depend>libgazebo11-dev</build_depend>
   <build_depend>realtime_tools</build_depend>
   <build_depend>roscpp</build_depend>
+  <build_depend>rospy</build_depend>
   <build_depend>std_msgs</build_depend>
+  <build_depend>sensor_msgs</build_depend>
   <build_depend>kdl_parser</build_depend>
   <build_depend>tf_conversions</build_depend>
   <build_depend>roslint</build_depend>
@@ -38,6 +40,10 @@
   <build_depend>panda_sim_controllers</build_depend>
   <build_depend>panda_sim_custom_action_server</build_depend>
 
+  <build_depend>effort_controllers</build_depend>
+  <build_depend>rosbridge_server</build_depend>
+  <build_depend>tf2_web_republisher</build_depend>
+  
   <run_depend>cv_bridge</run_depend>
   <run_depend>gazebo</run_depend>
   <run_depend>gazebo_ros</run_depend>
@@ -48,8 +54,10 @@
   <run_depend>image_transport</run_depend>
   <run_depend>realtime_tools</run_depend>
   <run_depend>roscpp</run_depend>
+  <run_depend>rospy</run_depend>
   <run_depend>franka_panda_description</run_depend>
   <run_depend>std_msgs</run_depend>
+  <run_depend>sensor_msgs</run_depend>
   <run_depend>kdl_parser</run_depend>
   <run_depend>tf_conversions</run_depend>
   <run_depend>panda_hardware_interface</run_depend>
@@ -58,10 +66,15 @@
   <run_depend>image_proc</run_depend>
   <run_depend>orocos_kdl</run_depend>
   <run_depend>nodelet</run_depend>
+  
+  <run_depend>effort_controllers</run_depend>
+  <run_depend>rosbridge_server</run_depend>
+  <run_depend>tf2_web_republisher</run_depend>
 
 
-  <export>
+<!--  <export>
     <gazebo plugin_path="${prefix}/lib" gazebo_media_path="${prefix}" />
     <gazebo_ros_control plugin="${prefix}/panda_robot_hw_sim_plugins.xml"/>
   </export>
 </package>
+-->

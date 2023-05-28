@@ -10,16 +10,16 @@ robot_config:
       - panda_joint5
       - panda_joint6
       - panda_joint7
-    arm_id: panda
+    arm_id: panda_hithand
 
     neutral_pose:
-        panda_joint1: -0.017792060227770554 
-        panda_joint2: -0.7601235411041661  
-        panda_joint3: 0.019782607023391807 
-        panda_joint4: -2.342050140544315 
-        panda_joint5: 0.029840531355804868 
-        panda_joint6: 1.5411935298621688 
-        panda_joint7: 0.7534486589746342
+        panda_joint1: 0.000
+        panda_joint2: -0.553876 
+        panda_joint3: 0.0
+        panda_joint4: -2.5361 
+        panda_joint5: 0.0 
+        panda_joint6: 1.98847
+        panda_joint7: -0.785398163
         
     joint_config:
         joint_acceleration_limit:
@@ -71,17 +71,17 @@ robot_config:
             panda_joint6: 12 # Nm
             panda_joint7: 12 # Nm            
 
-gripper_config:
-  joint_names:
-    - panda_finger_joint1
-    - panda_finger_joint2
-  default_speed: 0.1  # [m/s]
-  default_grasp_epsilon:
-    inner: 0.005 # [m]
-    outer: 0.005 # [m]
+#gripper_config:
+#  joint_names:
+#    - panda_finger_joint1
+#    - panda_finger_joint2
+#  default_speed: 0.1  # [m/s]
+#  default_grasp_epsilon:
+#    inner: 0.005 # [m]
+#    outer: 0.005 # [m]
 
-controllers_config:
-    position_controller: "panda_simulator/position_joint_position_controller"
-    torque_controller: "panda_simulator/effort_joint_torque_controller"
-    velocity_controller: "panda_simulator/velocity_joint_velocity_controller"
-    default_controller: "panda_simulator/position_joint_position_controller" 
+#controllers_config:
+#    position_controller: "panda_simulator/position_joint_position_controller"
+#    torque_controller: "panda_simulator/effort_joint_torque_controller"
+#    velocity_controller: "panda_simulator/velocity_joint_velocity_controller"
+#    default_controller: "panda_simulator/position_joint_position_controller" 

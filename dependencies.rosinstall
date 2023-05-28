@@ -5,7 +5,7 @@
 - git:
     local-name: panda_moveit_config
     uri: https://github.com/ros-planning/panda_moveit_config
-    version: melodic-devel
+    version: noetic-devel
 - git:
     local-name: franka_ros_interface
     uri: https://github.com/JustaGist/franka_ros_interface

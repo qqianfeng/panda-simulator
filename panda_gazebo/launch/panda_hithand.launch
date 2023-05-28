@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<launch>
+  <!--========================================================================================-->
+  <!-- load_gripper-->
+  <!-- use_custom_action_servers-->
+  <!-- paused-->
+  <!-- use_sim_time-->
+  <!-- gui-->
+  <!-- headless-->
+  <!-- debug-->
+  <!-- ns-->
+  <!-- load_gazebo:          This argument dictates whether gazebo should be launched in this file-->
+  <!-- initial_joint_states: This argument sets the initial joint states-->
+  <!-- -->
+  <!-- -->
+  <!--========================================================================================-->
+  <arg name="arm_name"                  default="panda"/>
+  <arg name="hand_name"                 default="hithand"/>
+  <arg name="no_end_effector"           default="false"/>
+  <arg name="load_gripper"              default="false"/> 
+  <arg name="load_hand"                 default="true" /> 
+
+  <arg name="paused"                    default="false"/>
+  <arg name="/use_sim_time"              default="true" />
+  <arg name="gui"                       default="true" />
+  <arg name="headless"                  default="false"/>
+  <arg name="debug"                     default="false"/>
+
+  <arg name="state_rate"                default="100"/>
+
+  <arg name="use_dart"                  default="true"/>
+
+  <arg name="realsense"                 default="d415"/>
+  <arg name="object_datasets_folder"    default="/home/vm/object_datasets"/>
+  <arg name="launch_rosbridge"          default="false"/>
+  <arg name="register_depth"            default="false"/> 
+  <arg name="vis_hithand_effort"        default="false"/>
+  <arg name="vis_hithand_position"      default="false"/>
+  <arg name="vis_hithand_velocity"      default="false"/>
+
+  <!-- Index Little Middle Ring Thumb -->
+
+  <!-- ================================================================================== -->
+  <!-- Set robot name based on end-effector (different based on actuated/non-actuated EE) -->
+  <arg name="robot_name" if="$(arg load_hand)"
+       value="$(arg arm_name)_$(arg hand_name)"/>
+  <arg name="robot_name" unless="$(arg load_hand)"
+       value="$(arg arm_name)"/>
+  <!-- ================================================================================== -->
+
+  <!-- Launch an empty world with ODE physics solver -->
+  <include unless="$(arg use_dart)" file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name"   value="$(find panda_gazebo)/worlds/panda.world"/>
+    <arg name="debug"        value="$(arg debug)" />
+    <arg name="gui"          value="$(arg gui)" />
+    <arg name="paused"       value="$(arg paused)"/>
+    <arg name="headless"     value="$(arg headless)"/>
+  </include> 
+
+
+  <!-- Launch an empty world with DART physics engine  -->
+  <include if="$(arg use_dart)" file="$(find panda_gazebo)/launch/empty_world_dart.launch">
+    <arg name="gui"      value="$(arg gui)"/>
+	  <arg name="paused"   value="$(arg paused)"/>
+  </include>
+
+
+  <!-- Load parameters to ROS parameter server-->
+  <rosparam command="load" file="$(find panda_gazebo)/config/robot_details.yaml"/>
+
+  <param name="object_datasets_folder"   value="$(arg object_datasets_folder)"/>
+  <param name="robot_name" type="str"    value="$(arg robot_name)"/>
+  <param name="hand_name"  type="str"    value="hithand"/>
+  <param name="/arm/root_name"           value="panda_link0"/>
+  <param name="/arm/tip_name"            value="hithand"
+	 if="$(arg load_hand)"       />
+  <param name="/arm/tip_name"            value="panda_hand" 
+	 if="$(arg load_gripper)"    />
+  <param name="/arm/tip_name"            value="panda_link8" 
+	 if="$(arg no_end_effector)" />
+
+  <!--<param name="/franka_gripper/robot_ip" value="sim" 
+	 unless="$(arg no_end_effector)"    /> -->
+
+  <param name="/arm/gravity_tip_name"    value="hithand"
+	 if="$(arg load_hand)" />
+  <param name="/arm/gravity_tip_name"    value="panda_hand" 
+	 if="$(arg load_gripper)" />
+  <param name="/arm/gravity_tip_name"    value="panda_link8" 
+	 if="$(arg no_end_effector)" />
+
+
+  <!-- Load the robot and end effector URDF-->	
+  <param name="robot_description" command="
+	$(find xacro)/xacro '$(find franka_panda_description)/robots/panda_arm_hand.urdf.xacro'
+	load_gripper:=$(arg load_gripper)
+	load_hand:=$(arg load_hand)
+	realsense:=$(arg realsense)
+	--inorder"/>
+
+  <!-- Spawn urdf of the robot -->
+  <node name="robot_description" pkg="gazebo_ros" type="spawn_model" 
+	args="-urdf -param robot_description -model $(arg robot_name)
+        -J Right_Thumb_1 0.0873 -J Right_Thumb_2 0.0873 -J Right_Thumb_3 0.0873
+        -J Right_Index_1 0.0873 -J Right_Index_2 0.0873 -J Right_Index_3 0.0873
+        -J Right_Middle_1 0.0873 -J Right_Middle_2 0.0873 -J Right_Middle_3 0.0873
+        -J Right_Ring_1 0.0873 -J Right_Ring_2 0.0873 -J Right_Ring_3 0.0873
+        -J Right_Little_1 0.0873 -J Right_Little_2 0.0873 -J Right_Little_3 0.0873
+	      -robot_namespace $(arg robot_name)"
+        respawn="false" output="screen" />
+
+
+  <!-- create a tf with base frame as 'base' (to match aml_robot) -->
+  <node name="base_to_link0" pkg="tf" type="static_transform_publisher"
+        args="0 0 0 0 0 0 1 base panda_link0 100" />
+  <node name="world_to_base" pkg="tf" type="static_transform_publisher"
+	args="0 0 0 0 0 0 1 world base 100" />
+
+  <!-- convert joint states to TF transforms -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+	respawn="false" output="screen">
+      <param name="publish_frequency" value="$(arg state_rate)"/>
+      <remap from="/joint_states" to="/$(arg robot_name)/joint_states" />
+  </node>
+
+
+  <!-- ++++++++++++++++++ Controllers +++++++++++++++++++ -->
+  <!-- Panda arm controller -->
+  <include file="$(find panda_sim_controllers)/launch/panda_control.launch">
+	<arg name="gui"               value="$(arg gui)" />
+	<arg name="load_gripper"      value="$(arg load_gripper)" />
+	<arg name="load_hand"         value="$(arg load_hand)" />
+  </include>
+  <!-- Hithand controller -->
+  <group if="$(arg load_hand)">
+	<include file="$(find hithand_control)/launch/hithand_control.launch">
+    <arg name="robot_name"      value="$(arg robot_name)"/>
+    <arg name="attached"        value="$(arg load_hand)" />
+	</include>	
+      <!-- Relay arm and hand joint states to respective topics from combined arm+hand joint states -->
+    <node name="joint_state_splitter" pkg="panda_gazebo" type="joint_state_splitter"
+	      respawn="false" output="screen">
+	  <param name="listen_prefix" value="$(arg robot_name)"/> 
+	  <param name="hand_prefix"   value="$(arg hand_name)"/>
+	  <param name="arm_string"    value="$(arg arm_name)"/> 
+        </node> 
+  </group> 
+
+  <!-- Initialize panda pose -->
+  <node name="init_panda_pose" pkg="panda_gazebo" type="init_panda_pose" respawn="false"
+	output="screen"/> 
+
+  <!-- Register depth and RGB data -->
+  <group if="$(arg register_depth)">
+    <node pkg="nodelet" type="nodelet" name="standalone_nodelet" args="manager" output="screen"/>
+    <node pkg="nodelet" type="nodelet" name="register_depth" args="load depth_image_proc/register standalone_nodelet" output="screen" respawn="false">
+      <remap from="/rgb/camera_info" to="/camera/color/camera_info" />
+      <remap from="/depth/camera_info" to="/camera/depth/camera_info" />
+      <remap from="/depth/image_rect" to="/camera/depth/image_raw" />
+    </node>
+    <node pkg="nodelet" type="nodelet" name="cloudify" args="load depth_image_proc/point_cloud_xyzrgb standalone_nodelet" output="screen" respawn="false">
+      <remap from="/rgb/camera_info" to="/camera/color/camera_info" />
+      <remap from="/rgb/image_rect_color" to="/camera/color/image_raw" />
+      <param name="queue_size" value="10" />
+    </node>
+  </group>
+
+  <group if="$(arg vis_hithand_effort)">
+      <node name="effort_plot" pkg="rqt_plot" type="rqt_plot"
+      args="/hithand/joint_states/effort[0] /hithand/joint_states/effort[1] /hithand/joint_states/effort[2] /hithand/joint_states/effort[3]" />
+  </group>
+<!--             /hithand/joint_states/effort[4] /hithand/joint_states/effort[5] /hithand/joint_states/effort[6] /hithand/joint_states/effort[7]
+            /hithand/joint_states/effort[8] /hithand/joint_states/effort[9] /hithand/joint_states/effort[10] /hithand/joint_states/effort[11]
+            /hithand/joint_states/effort[12] /hithand/joint_states/effort[13] /hithand/joint_states/effort[14] /hithand/joint_states/effort[15]
+            /hithand/joint_states/effort[16] /hithand/joint_states/effort[17] /hithand/joint_states/effort[18] /hithand/joint_states/effort[19] -->
+
+  <group if="$(arg vis_hithand_position)">
+      <node name="pos_plot" pkg="rqt_plot" type="rqt_plot"
+      args="/hithand/joint_states/position[0] /hithand/joint_states/position[1] /hithand/joint_states/position[2] /hithand/joint_states/position[3]" />
+  </group>
+
+<!-- 
+            /hithand/joint_states/position[4] /hithand/joint_states/position[5] /hithand/joint_states/position[6] /hithand/joint_states/position[7]
+            /hithand/joint_states/position[8] /hithand/joint_states/position[9] /hithand/joint_states/position[10] /hithand/joint_states/position[11]
+            /hithand/joint_states/position[12] /hithand/joint_states/position[13] /hithand/joint_states/position[14] /hithand/joint_states/position[15]
+            /hithand/joint_states/position[16] /hithand/joint_states/position[17] /hithand/joint_states/position[18] /hithand/joint_states/position[19] -->
+
+  <group if="$(arg vis_hithand_velocity)">
+      <node name="vel_plot" pkg="rqt_plot" type="rqt_plot"
+      args="/hithand/joint_states/veloctiy[0] /hithand/joint_states/velocity[1] /hithand/joint_states/velocity[2] /hithand/joint_states/velocity[3]" />
+  </group>
+
+  <!-- Launch Rosbridge and tf2_web_publisher to talk to roslibpy and python3 -->
+  <group if="$(arg launch_rosbridge)">
+     <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch"/>
+     <node pkg="tf2_web_republisher" type="tf2_web_republisher" name="tf2_web_republisher"/>     
+  </group>
+</launch>
