@@ -42,7 +42,9 @@ This section guides through the whole installation process, not only for the pan
     Instead of executing wget https://developer.nvidia.com/compute/machine-learning/cudnn/secure/7.6.5.32/Production/10.1_20191031/cudnn-10.1-linux-x64-v7.6.5.32.tgz you will need to find the that file cudnn-10.1-linux-x64-v7.6.5.32.tgz on NVIDIAs website, after logging in. Running this command will fail, because you need to authorise with NVIDIA first.
 
 
-- [CUDA 10.1 Installation](https://gist.github.com/vincentmaye/090159c493adbf6b3d8f39329c78d12c)
+- [CUDA 10.1 Installation] Please refer to links below:  
+https://developer.nvidia.com/cuda-toolkit-archive  
+https://docs.nvidia.com/cuda/archive/10.1/cuda-installation-guide-linux/index.html#runfile  
 
 - Make sure you have restarted your computer. Afterwards verify the cuda installation via nvidia-smi and nvcc -V
 
