@@ -324,6 +324,16 @@ This section guides through the whole installation process, not only for the pan
     catkin build trajectory_smoothing
     ```
 
+6. Gazebo realsense plugin
+    ```baseh
+    cd hithand_ws/src
+
+    git clone https://github.com/qianbot/realsense-gazebo-plugin
+    cd ..
+
+    catkin build realsense_gazebo_plugin
+    ```
+  
 #### **Building the Package itself**
 
 
