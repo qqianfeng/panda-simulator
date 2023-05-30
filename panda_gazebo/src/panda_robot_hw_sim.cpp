@@ -188,4 +188,4 @@ void PandaRobotHWSim::eStopActive(const bool active)
 
 }
 
-PLUGINLIB_EXPORT_CLASS(panda_gazebo::PandaRobotHWSim, gazebo_ros_control::RobotHWSim)
+PLUGINLIB_EXPORT_CLASS(panda_gazebo::PandaRobotHWSim, gazebo_ros_control::DefaultRobotHWSim)

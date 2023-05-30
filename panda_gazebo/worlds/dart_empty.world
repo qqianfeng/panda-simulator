@@ -4,7 +4,7 @@
     <physics type="dart">
       <real_time_update_rate>1000</real_time_update_rate>
       <dart>
-        <collision_detector>dart</collision_detector>
+        <collision_detector>FCL</collision_detector>
       </dart>
     </physics>
     <include>

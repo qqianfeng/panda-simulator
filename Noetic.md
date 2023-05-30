@@ -24,7 +24,6 @@ Note: choose the Desktop Install (NO Desktop-Full Install!!)
 3. Most of the other basic dependencies can be met by running the following apt-get command: apt install ros-${ROS_DISTRO}-rospy-message-converter ros-${ROS_DISTRO}-effort-controllers ros-${ROS_DISTRO}-joint-state-controller ros-${ROS_DISTRO}-moveit ros-${ROS_DISTRO}-moveit-commander ros-${ROS_DISTRO}-moveit-visual-tools
 
 4. sudo apt-get install ros-kinetic-trac-ik-kinematics-plugin
-
 ros-noetic-image-common
 
 Note: 
