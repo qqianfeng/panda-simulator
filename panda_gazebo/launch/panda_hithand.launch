@@ -19,7 +19,8 @@
   <arg name="no_end_effector"           default="false"/>
   <arg name="load_gripper"              default="false"/> 
   <arg name="load_hand"                 default="true" /> 
-
+  <arg name="use_gazebo_control"        default="false" />
+  
   <arg name="paused"                    default="false"/>
   <arg name="/use_sim_time"              default="true" />
   <arg name="gui"                       default="true" />
@@ -96,7 +97,8 @@
 	load_gripper:=$(arg load_gripper)
 	load_hand:=$(arg load_hand)
 	realsense:=$(arg realsense)
-	--inorder"/>
+    use_gazebo_control:=$(arg use_gazebo_control)
+	"/>
 
   <!-- Spawn urdf of the robot -->
   <node name="robot_description" pkg="gazebo_ros" type="spawn_model" 

@@ -76,5 +76,6 @@
     <gazebo plugin_path="${prefix}/lib" gazebo_media_path="${prefix}" />
     <gazebo_ros_control plugin="${prefix}/panda_robot_hw_sim_plugins.xml"/>
   </export>
-</package>
+
 -->
+</package>
