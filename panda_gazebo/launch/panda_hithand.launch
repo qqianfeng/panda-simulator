@@ -120,7 +120,7 @@
 
   <!-- convert joint states to TF transforms -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
-	respawn="false" output="screen">
+	respawn="false" output="log">
       <param name="publish_frequency" value="$(arg state_rate)"/>
       <remap from="/joint_states" to="/$(arg robot_name)/joint_states" />
   </node>
@@ -150,7 +150,7 @@
 
   <!-- Initialize panda pose -->
   <node name="init_panda_pose" pkg="panda_gazebo" type="init_panda_pose" respawn="false"
-	output="screen"/> 
+	output="log"/> 
 
   <!-- Register depth and RGB data -->
   <group if="$(arg register_depth)">
