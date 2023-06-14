@@ -314,7 +314,17 @@ https://docs.nvidia.com/cuda/archive/10.1/cuda-installation-guide-linux/index.ht
 
     catkin build hithand_control hithand_gazebo hithand_description
     ```
+4. Robotiq ros
+    ```bash
+    sudo apt-get install -y ros-melodic-socketcan-interface ros-melodic-soem
 
+    cd hithand_ws/src
+
+    git clone https://github.com/davidmartinez13/robotiq
+    cd ..
+
+    catkin build robotiq
+    ```
 5. Trajectory smoothing
     ```bash
     cd hithand_ws/src
