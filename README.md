@@ -316,6 +316,7 @@ https://docs.nvidia.com/cuda/archive/10.1/cuda-installation-guide-linux/index.ht
     ```
 4. Robotiq ros
     ```bash
+
     sudo apt-get install -y ros-melodic-socketcan-interface ros-melodic-soem
 
     cd hithand_ws/src
