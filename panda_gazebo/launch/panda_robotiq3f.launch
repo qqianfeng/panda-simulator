@@ -31,7 +31,7 @@
   <arg name="use_dart"                  default="true"/>
 
   <arg name="realsense"                 default="d415"/>
-  <arg name="object_datasets_folder"    default="/home/vm/object_datasets"/>
+  <arg name="object_datasets_folder"    default="/home/david/object_datasets"/>
   <arg name="launch_rosbridge"          default="false"/>
   <arg name="register_depth"            default="false"/> 
   <arg name="vis_hithand_effort"        default="false"/>
