@@ -18,8 +18,8 @@
   <arg name="hand_name"                 default="hithand"/>
   <arg name="no_end_effector"           default="false"/>
   <arg name="load_gripper"              default="false"/> 
-  <arg name="load_hand"                 default="true" /> 
-
+  <arg name="load_hand"                 default="false" /> 
+  <arg name="load_robotiq"                 default="false" />
   <arg name="paused"                    default="false"/>
   <arg name="/use_sim_time"              default="true" />
   <arg name="gui"                       default="true" />
@@ -72,11 +72,16 @@
   <param name="robot_name" type="str"    value="$(arg robot_name)"/>
   <param name="hand_name"  type="str"    value="hithand"/>
   <param name="/arm/root_name"           value="panda_link0"/>
-  <param name="/arm/tip_name"            value="hithand"
-	 if="$(arg load_hand)"       />
+  <param name="/arm/tip_name"            value="hithand" 
+    if="$(arg load_hand)" />
+
   <param name="/arm/tip_name"            value="panda_hand" 
 	 if="$(arg load_gripper)"    />
-  <param name="/arm/tip_name"            value="panda_link8" 
+
+  <param name="/arm/tip_name"            value="panda_hand"
+  if="$(arg load_robotiq)"    />
+
+  <param name="/arm/tip_name"            value="panda_link8"
 	 if="$(arg no_end_effector)" />
 
   <!--<param name="/franka_gripper/robot_ip" value="sim" 
@@ -94,12 +99,13 @@
   <param name="robot_description" command="
 	$(find xacro)/xacro '$(find franka_panda_description)/robots/panda_arm_hand.urdf.xacro'
 	load_gripper:=$(arg load_gripper)
+  load_robotiq:=$(arg load_robotiq)
 	load_hand:=$(arg load_hand)
 	realsense:=$(arg realsense)
 	--inorder"/>
 
   <!-- Spawn urdf of the robot -->
-  <node name="robot_description" pkg="gazebo_ros" type="spawn_model" 
+  <!-- <node name="robot_description" pkg="gazebo_ros" type="spawn_model" 
 	args="-urdf -param robot_description -model $(arg robot_name)
         -J Right_Thumb_1 0.0873 -J Right_Thumb_2 0.0873 -J Right_Thumb_3 0.0873
         -J Right_Index_1 0.0873 -J Right_Index_2 0.0873 -J Right_Index_3 0.0873
@@ -107,8 +113,11 @@
         -J Right_Ring_1 0.0873 -J Right_Ring_2 0.0873 -J Right_Ring_3 0.0873
         -J Right_Little_1 0.0873 -J Right_Little_2 0.0873 -J Right_Little_3 0.0873
 	      -robot_namespace $(arg robot_name)"
+        respawn="false" output="screen" /> -->
+  <node name="robot_description" pkg="gazebo_ros" type="spawn_model" 
+	args="-urdf -param robot_description -model $(arg robot_name)
+	      -robot_namespace $(arg robot_name)"
         respawn="false" output="screen" />
-
 
   <!-- create a tf with base frame as 'base' (to match aml_robot) -->
   <node name="base_to_link0" pkg="tf" type="static_transform_publisher"
