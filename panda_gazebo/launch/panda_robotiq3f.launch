@@ -123,6 +123,7 @@
       <remap from="/joint_states" to="/$(arg robot_name)/joint_states" />
   </node>
 
+  <!-- from src/robotiq/robotiq_3f_gripper_visualization/launch/robotiq_gripper_upload.launch -->
   <param name="robotiq_description" command="$(find xacro)/xacro.py '$(find robotiq_3f_gripper_visualization)/cfg/robotiq-3f-gripper_articulated.xacro'" />
 
   <!-- <node pkg="robot_state_publisher" type="state_publisher" name="robotiq_hands_l_hand_robot_state_publisher">
@@ -130,7 +131,7 @@
     <remap from="joint_states" to="/robotiq_hands/left_hand/joint_states" />
   </node> -->
 
-  <!-- spawn in gazebo -->
+      <!-- spawn in gazebo -->
   <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robotiq_description -model robotiq_3f -z 0.1" respawn="false" output="screen" />
 
 
