@@ -378,6 +378,12 @@ Once the dependencies are met, the package can be installed using catkin build (
     ```bash
     rostopic pub /panda_hithand/panda_j1_position_controller/command std_msgs/Float64 "data: 0.0"
     ```
+- To spawn the robotiq gripper in gazebo run: 
+
+    ```bash
+    roslaunch robotiq_3f_gripper_articulated_gazebo robotiq_gripper_empty_world.launch
+    ```
+
 ## Grasping Pipeline
 For the entire grasping pipeline you will need more packages
 
@@ -426,7 +432,9 @@ For the entire grasping pipeline you will need more packages
 ### Starting Procedure
 The whole system gets started in the following order. Don't be too quick with executing the commands below and execute each of them in a seperate terminal.
 1. Start the panda_simulator \
-`roslaunch panda_gazebo panda_hithand.launch` 
+`roslaunch panda_gazebo panda_hithand.launch` \
+or to spawn robotiq:\
+`roslaunch panda_gazebo panda_robotiq3f.launch`
 
 2. Start the panda_hithand_moveit_config \
 `roslaunch panda_hithand_moveit_config panda_hithand_moveit.launch` 
