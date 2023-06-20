@@ -133,8 +133,8 @@
   </node>
 
   <!-- from src/robotiq/robotiq_3f_gripper_visualization/launch/robotiq_gripper_upload.launch -->
-  <param name="robotiq_description" command="$(find xacro)/xacro.py '$(find robotiq_3f_gripper_visualization)/cfg/robotiq-3f-gripper_articulated.xacro'" />
-
+  <!-- <param name="robotiq_description" command="$(find xacro)/xacro.py '$(find robotiq_3f_gripper_visualization)/cfg/robotiq-3f-gripper_articulated.xacro'" /> -->
+  <param name="robotiq_description" command="$(find xacro)/xacro.py '$(find robotiq_3f_gripper_visualization)/cfg/robotiq_hand.xacro'" />
   <!-- <node pkg="robot_state_publisher" type="state_publisher" name="robotiq_hands_l_hand_robot_state_publisher">
     <param name="publish_frequency" type="double" value="50.0" />
     <remap from="joint_states" to="/robotiq_hands/left_hand/joint_states" />
