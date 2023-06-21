@@ -116,6 +116,8 @@
         respawn="false" output="screen" /> -->
   <node name="robot_description" pkg="gazebo_ros" type="spawn_model" 
 	args="-urdf -param robot_description -model $(arg robot_name)
+        -J palm_finger_1_joint 0.5 -J palm_finger_2_joint -0.5
+        -J finger_1_joint_1 0.5 -J finger_2_joint_1 0.5 -J finger_middle_joint_1 -0.5
 	      -robot_namespace $(arg robot_name)"
         respawn="false" output="screen" />
 
@@ -149,7 +151,8 @@
   <include file="$(find panda_sim_controllers)/launch/panda_control.launch">
 	<arg name="gui"               value="$(arg gui)" />
 	<arg name="load_gripper"      value="$(arg load_gripper)" />
-	<arg name="load_hand"         value="$(arg load_hand)" />
+	<!-- <arg name="load_hand"         value="$(arg load_robotiq)" /> -->
+  <arg name="load_hand"         value="$(arg load_hand)" />
   </include>
   <!-- Hithand controller -->
   <group if="$(arg load_hand)">
