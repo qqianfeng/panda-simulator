@@ -437,9 +437,14 @@ For the entire grasping pipeline you will need more packages
 ### Starting Procedure
 The whole system gets started in the following order. Don't be too quick with executing the commands below and execute each of them in a seperate terminal.
 1. Start the panda_simulator \
-`roslaunch panda_gazebo panda_hithand.launch` \
-or to spawn robotiq next to panda:\
-`roslaunch panda_gazebo panda_robotiq3f.launch`
+`roslaunch panda_gazebo panda_hithand.launch` 
+    - or to spawn robotiq next to panda:\
+    `roslaunch panda_gazebo panda_robotiq3f.launch`\
+     Test the control of panda with robotiq by sending a command to the corresponding controller topic. E.g.
+
+        ```bash
+        rostopic pub /panda/panda_j7_position_controller/command std_msgs/Float64 "data: 1.0"
+        ```
 
 2. Start the panda_hithand_moveit_config \
 `roslaunch panda_hithand_moveit_config panda_hithand_moveit.launch` 

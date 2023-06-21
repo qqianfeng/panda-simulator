@@ -3,15 +3,12 @@
   <!--========================================================================================-->
   <!-- load_gripper-->
   <!-- use_custom_action_servers-->
-  <!-- start_moveit-->
-  <!-- load_demo_planning_scene-->
   <!-- paused-->
   <!-- use_sim_time-->
   <!-- gui-->
   <!-- headless-->
   <!-- debug-->
   <!-- ns-->
-  <!-- static:               This argument fixes the robot statically to the world-->
   <!-- load_gazebo:          This argument dictates whether gazebo should be launched in this file-->
   <!-- initial_joint_states: This argument sets the initial joint states-->
   <!-- -->
@@ -24,12 +21,10 @@
   <arg name="load_hand"                 default="false" /> 
   <arg name="load_robotiq"                 default="true" />
   <arg name="paused"                    default="false"/>
-  <arg name="use_sim_time"              default="true" />
-  <arg name="use_custom_action_servers" default="false" />
+  <arg name="/use_sim_time"              default="true" />
   <arg name="gui"                       default="true" />
   <arg name="headless"                  default="false"/>
   <arg name="debug"                     default="false"/>
-  <arg name="load_demo_planning_scene"  default="false"/>
 
   <arg name="state_rate"                default="100"/>
 
@@ -110,6 +105,15 @@
 	--inorder"/>
 
   <!-- Spawn urdf of the robot -->
+  <!-- <node name="robot_description" pkg="gazebo_ros" type="spawn_model" 
+	args="-urdf -param robot_description -model $(arg robot_name)
+        -J Right_Thumb_1 0.0873 -J Right_Thumb_2 0.0873 -J Right_Thumb_3 0.0873
+        -J Right_Index_1 0.0873 -J Right_Index_2 0.0873 -J Right_Index_3 0.0873
+        -J Right_Middle_1 0.0873 -J Right_Middle_2 0.0873 -J Right_Middle_3 0.0873
+        -J Right_Ring_1 0.0873 -J Right_Ring_2 0.0873 -J Right_Ring_3 0.0873
+        -J Right_Little_1 0.0873 -J Right_Little_2 0.0873 -J Right_Little_3 0.0873
+	      -robot_namespace $(arg robot_name)"
+        respawn="false" output="screen" /> -->
   <node name="robot_description" pkg="gazebo_ros" type="spawn_model" 
 	args="-urdf -param robot_description -model $(arg robot_name)
 	      -robot_namespace $(arg robot_name)"
@@ -120,10 +124,17 @@
         args="0 0 0 0 0 0 1 base panda_link0 100" />
   <node name="world_to_base" pkg="tf" type="static_transform_publisher"
 	args="0 0 0 0 0 0 1 world base 100" />
+ 
+  <!-- convert joint states to TF transforms -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+	respawn="false" output="screen">
+      <param name="publish_frequency" value="$(arg state_rate)"/>
+      <remap from="/joint_states" to="/$(arg robot_name)/joint_states" />
+  </node>
 
   <!-- from src/robotiq/robotiq_3f_gripper_visualization/launch/robotiq_gripper_upload.launch -->
   <!-- <param name="robotiq_description" command="$(find xacro)/xacro.py '$(find robotiq_3f_gripper_visualization)/cfg/robotiq-3f-gripper_articulated.xacro'" /> -->
-  <!-- <param name="robotiq_description" command="$(find xacro)/xacro '$(find robotiq_3f_gripper_visualization)/cfg/robotiq_hand.xacro'" /> -->
+  <!-- <param name="robotiq_description" command="$(find xacro)/xacro.py '$(find robotiq_3f_gripper_visualization)/cfg/robotiq_hand.xacro'" /> -->
   <!-- <node pkg="robot_state_publisher" type="state_publisher" name="robotiq_hands_l_hand_robot_state_publisher">
     <param name="publish_frequency" type="double" value="50.0" />
     <remap from="joint_states" to="/robotiq_hands/left_hand/joint_states" />
@@ -140,25 +151,68 @@
 	<arg name="load_gripper"      value="$(arg load_gripper)" />
 	<arg name="load_hand"         value="$(arg load_hand)" />
   </include>
-
-  <group if="$(eval arg('use_custom_action_servers') == true)">
-    <node name="joint_trajectory_server_emulator" pkg="panda_sim_custom_action_server"
-	  type="start_joint_trajectory_server.py" />
-
-    <group if="$(eval arg('load_gripper') == true)">
-      <node name="gripper_action_server_emulator" pkg="panda_sim_custom_action_server"
-	    type="start_gripper_action_server.py" />
-    </group>  
-    <group if="$(eval arg('start_moveit') == true)">
-       <include file="$(find panda_sim_moveit)/launch/sim_move_group.launch">
-          <arg name="load_gripper" value="$(arg load_gripper)" />
-          <arg name="info"         value="true" />
-       </include>
-    </group>
-  </group>  
-  <group if="$(eval arg('load_demo_planning_scene') == true)">
-    <node name="demo_scene_loader" pkg="franka_moveit" type="create_demo_planning_scene.py"
-	  respawn="false" output="screen" />
+  <!-- Hithand controller -->
+  <group if="$(arg load_hand)">
+	<include file="$(find hithand_control)/launch/hithand_control.launch">
+    <arg name="robot_name"      value="$(arg robot_name)"/>
+    <arg name="attached"        value="$(arg load_hand)" />
+	</include>	
+      <!-- Relay arm and hand joint states to respective topics from combined arm+hand joint states -->
+    <node name="joint_state_splitter" pkg="panda_gazebo" type="joint_state_splitter"
+	      respawn="false" output="screen">
+	  <param name="listen_prefix" value="$(arg robot_name)"/> 
+	  <param name="hand_prefix"   value="$(arg hand_name)"/>
+	  <param name="arm_string"    value="$(arg arm_name)"/> 
+        </node> 
   </group> 
 
+  <!-- Initialize panda pose -->
+  <node name="init_panda_pose" pkg="panda_gazebo" type="init_panda_pose" respawn="false"
+	output="screen"/> 
+
+  <!-- Register depth and RGB data -->
+  <group if="$(arg register_depth)">
+    <node pkg="nodelet" type="nodelet" name="standalone_nodelet" args="manager" output="screen"/>
+    <node pkg="nodelet" type="nodelet" name="register_depth" args="load depth_image_proc/register standalone_nodelet" output="screen" respawn="false">
+      <remap from="/rgb/camera_info" to="/camera/color/camera_info" />
+      <remap from="/depth/camera_info" to="/camera/depth/camera_info" />
+      <remap from="/depth/image_rect" to="/camera/depth/image_raw" />
+    </node>
+    <node pkg="nodelet" type="nodelet" name="cloudify" args="load depth_image_proc/point_cloud_xyzrgb standalone_nodelet" output="screen" respawn="false">
+      <remap from="/rgb/camera_info" to="/camera/color/camera_info" />
+      <remap from="/rgb/image_rect_color" to="/camera/color/image_raw" />
+      <param name="queue_size" value="10" />
+    </node>
+  </group>
+
+  <group if="$(arg vis_hithand_effort)">
+      <node name="effort_plot" pkg="rqt_plot" type="rqt_plot"
+      args="/hithand/joint_states/effort[0] /hithand/joint_states/effort[1] /hithand/joint_states/effort[2] /hithand/joint_states/effort[3]" />
+  </group>
+<!--             /hithand/joint_states/effort[4] /hithand/joint_states/effort[5] /hithand/joint_states/effort[6] /hithand/joint_states/effort[7]
+            /hithand/joint_states/effort[8] /hithand/joint_states/effort[9] /hithand/joint_states/effort[10] /hithand/joint_states/effort[11]
+            /hithand/joint_states/effort[12] /hithand/joint_states/effort[13] /hithand/joint_states/effort[14] /hithand/joint_states/effort[15]
+            /hithand/joint_states/effort[16] /hithand/joint_states/effort[17] /hithand/joint_states/effort[18] /hithand/joint_states/effort[19] -->
+
+  <group if="$(arg vis_hithand_position)">
+      <node name="pos_plot" pkg="rqt_plot" type="rqt_plot"
+      args="/hithand/joint_states/position[0] /hithand/joint_states/position[1] /hithand/joint_states/position[2] /hithand/joint_states/position[3]" />
+  </group>
+
+<!-- 
+            /hithand/joint_states/position[4] /hithand/joint_states/position[5] /hithand/joint_states/position[6] /hithand/joint_states/position[7]
+            /hithand/joint_states/position[8] /hithand/joint_states/position[9] /hithand/joint_states/position[10] /hithand/joint_states/position[11]
+            /hithand/joint_states/position[12] /hithand/joint_states/position[13] /hithand/joint_states/position[14] /hithand/joint_states/position[15]
+            /hithand/joint_states/position[16] /hithand/joint_states/position[17] /hithand/joint_states/position[18] /hithand/joint_states/position[19] -->
+
+  <group if="$(arg vis_hithand_velocity)">
+      <node name="vel_plot" pkg="rqt_plot" type="rqt_plot"
+      args="/hithand/joint_states/veloctiy[0] /hithand/joint_states/velocity[1] /hithand/joint_states/velocity[2] /hithand/joint_states/velocity[3]" />
+  </group>
+
+  <!-- Launch Rosbridge and tf2_web_publisher to talk to roslibpy and python3 -->
+  <group if="$(arg launch_rosbridge)">
+     <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch"/>
+     <node pkg="tf2_web_republisher" type="tf2_web_republisher" name="tf2_web_republisher"/>     
+  </group>
 </launch>
