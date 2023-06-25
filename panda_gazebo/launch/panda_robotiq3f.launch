@@ -114,10 +114,14 @@
         -J Right_Little_1 0.0873 -J Right_Little_2 0.0873 -J Right_Little_3 0.0873
 	      -robot_namespace $(arg robot_name)"
         respawn="false" output="screen" /> -->
-  <node name="robot_description" pkg="gazebo_ros" type="spawn_model" 
+  <!-- <node name="robot_description" pkg="gazebo_ros" type="spawn_model" 
 	args="-urdf -param robot_description -model $(arg robot_name)
         -J palm_finger_1_joint 0.5 -J palm_finger_2_joint -0.5
         -J finger_1_joint_1 0.5 -J finger_2_joint_1 0.5 -J finger_middle_joint_1 -0.5
+	      -robot_namespace $(arg robot_name)"
+        respawn="false" output="screen" /> -->
+  <node name="robot_description" pkg="gazebo_ros" type="spawn_model" 
+	args="-urdf -param robot_description -model $(arg robot_name)
 	      -robot_namespace $(arg robot_name)"
         respawn="false" output="screen" />
 
