@@ -378,7 +378,7 @@ Once the dependencies are met, the package can be installed using catkin build (
     ```bash
     rostopic pub /panda_hithand/panda_j1_position_controller/command std_msgs/Float64 "data: 0.0"
     ```
-- To spawn the robotiq articulated gripper in gazebo run: 
+- To spawn the robotiq dummy gripper in gazebo run: 
 
     ```bash
     roslaunch robotiq_3f_gripper_articulated_gazebo robotiq_gripper_empty_world.launch
@@ -388,6 +388,42 @@ Once the dependencies are met, the package can be installed using catkin build (
     ```bash
     roslaunch robotiq_3f_gripper_articulated_gazebo robotiq_gripper_empty_world_macro.launch
     ```
+
+    - Test the control with the provided python script:
+        ```bash
+        cd /robotiq/robotiq_3f_gripper_control/nodes/
+
+        python2 Robotiq3FGripperSimpleController.py
+        ```
+        - The following commands are available from the python script:
+    
+            r: Reset
+
+            a: Activate
+
+            c: Close
+
+            o: Open
+
+            b: Basic mode
+
+            p: Pinch mode
+
+            w: Wide mode
+
+            s: Scissor mode
+
+            (0-255): Go to that position
+
+            f: Faster
+
+            l: Slower
+
+            i: Increase force
+
+            d: Decrease force
+
+
 
 ## Grasping Pipeline
 For the entire grasping pipeline you will need more packages
@@ -440,11 +476,12 @@ The whole system gets started in the following order. Don't be too quick with ex
 `roslaunch panda_gazebo panda_hithand.launch` 
     - or to spawn robotiq next to panda:\
     `roslaunch panda_gazebo panda_robotiq3f.launch`\
-     Test the control of panda with robotiq by sending a command to the corresponding controller topic. E.g.
+     Test the control of panda with mounted robotiq by sending a command to the corresponding controller topic. E.g.
 
         ```bash
         rostopic pub /panda/panda_j7_position_controller/command std_msgs/Float64 "data: 1.0"
         ```
+        Also, you can test the gripper functionality with the Robotiq3FGripperSimpleController.py mentioned in the Usage section.
 
 2. Start the panda_hithand_moveit_config \
 `roslaunch panda_hithand_moveit_config panda_hithand_moveit.launch` 
