@@ -314,7 +314,7 @@ https://docs.nvidia.com/cuda/archive/10.1/cuda-installation-guide-linux/index.ht
 
     catkin build hithand_control hithand_gazebo hithand_description
     ```
-4. Robotiq ros
+5. Robotiq ros
     ```bash
 
     sudo apt-get install -y ros-melodic-socketcan-interface ros-melodic-soem
@@ -326,7 +326,17 @@ https://docs.nvidia.com/cuda/archive/10.1/cuda-installation-guide-linux/index.ht
 
     catkin build robotiq
     ```
-5. Trajectory smoothing
+6. Robotiq ros control pkg:
+    ```bash
+    cd hithand_ws/src
+
+    git clone https://github.com/davidmartinez13/robotiq_3f_ros_pkg.git
+
+    cd ..
+
+    catkin build robotiq_3f_ros_pkg
+    ```
+. Trajectory smoothing
     ```bash
     cd hithand_ws/src
 
@@ -423,6 +433,27 @@ Once the dependencies are met, the package can be installed using catkin build (
 
             d: Decrease force
 
+    - Or, control the gripper with ros services:
+        
+        - If in sim, then launch the listener for sim:
+            ```
+            roslaunch robotiq_3f_driver listener_sim.launch
+            ```
+        - If not on sim, launch the listener:
+            ```
+            roslaunch robotiq_3f_driver listener.launch ip_address:=192.168.1.11
+            ```
+            Both ways the ROS services and gripper will be activated.\
+            Try sending some commands as:
+
+            ```
+            rosservice call /robotiq_3f_gripper/activate
+            rosservice call /robotiq_3f_gripper/set_mode wide
+            rosservice call /robotiq_3f_gripper/set_position 200
+            rosservice call /robotiq_3f_gripper/set_position 150
+            rosservice call /robotiq_3f_gripper/set_position 0
+            ```
+        
 
 
 ## Grasping Pipeline
@@ -481,7 +512,7 @@ The whole system gets started in the following order. Don't be too quick with ex
         ```bash
         rostopic pub /panda/panda_j7_position_controller/command std_msgs/Float64 "data: 1.0"
         ```
-        Also, you can test the gripper functionality with the Robotiq3FGripperSimpleController.py mentioned in the Usage section.
+        Also, you can test the gripper functionality with the Robotiq3FGripperSimpleController.py or via ROS services mentioned in the Usage section.
 
 2. Start the panda_hithand_moveit_config \
 `roslaunch panda_hithand_moveit_config panda_hithand_moveit.launch` 
