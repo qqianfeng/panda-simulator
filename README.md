@@ -336,7 +336,7 @@ https://docs.nvidia.com/cuda/archive/10.1/cuda-installation-guide-linux/index.ht
 
     catkin build robotiq_3f_ros_pkg
     ```
-. Trajectory smoothing
+7. Trajectory smoothing
     ```bash
     cd hithand_ws/src
 
@@ -347,7 +347,7 @@ https://docs.nvidia.com/cuda/archive/10.1/cuda-installation-guide-linux/index.ht
     catkin build trajectory_smoothing
     ```
 
-6. Gazebo realsense plugin
+8. Gazebo realsense plugin
     ```baseh
     cd hithand_ws/src
 
@@ -516,6 +516,9 @@ The whole system gets started in the following order. Don't be too quick with ex
 
 2. Start the panda_hithand_moveit_config \
 `roslaunch panda_hithand_moveit_config panda_hithand_moveit.launch` 
-
+    - or to spawn robotiq3f moveit with panda (not yet fully implemented):\
+        ```bash
+        roslaunch robotiq_3f_rviz_moveit_panda panda_robotiq3f_moveit.launch
+        ```
 3. Start the grasp_pipeline. This exposes the the grasping servers. Currently this does not do anything in and of itself. But you can for example spawn objects in Gazebo \
 `roslaunch grasp_pipeline grasp_pipeline_servers.launch` 
