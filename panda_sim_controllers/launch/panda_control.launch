@@ -3,15 +3,23 @@
 
   <!-- ================================================================================= -->
   <arg name="load_gripper"     default="false"/>
-  <arg name="load_hand"        default="true" />
+  <arg name="load_robotiq"     default="false" />
+  <arg name="load_hand"        default="false" />
   <arg name="gui"              default="false"/>
   <arg name="arm_name"         default="panda"/>
   <arg name="control_rate"     default="100"/>
-  <!-- ================================================================================= -->  
+  <!-- ================================================================================= -->
   <arg name="robot_name"   value="panda_hithand"
        if="$(arg load_hand)"/>
   <arg name="robot_name"   value="panda"
-       unless="$(arg load_hand)"/>
+       if="$(arg load_robotiq)"/>
+  <arg name="robot_name"   value="panda"
+       unless="$(eval not arg('load_hand') or not arg('load_robotiq'))"/>
+
+  <!-- <arg name="robot_name"   value="panda_hithand"
+       if="$(arg load_robotiq)"/>
+  <arg name="robot_name"   value="panda"
+       unless="$(arg load_robotiq)"/> -->
   <arg name="jnt_state_topic"   default="/$(arg arm_name)/joint_states"/>
   <arg name="jnt_des_topic"     default="/$(arg arm_name)/joint_cmd"/>
   <arg name="task_des_topic"    default="/$(arg arm_name)/task_cmd"/>
