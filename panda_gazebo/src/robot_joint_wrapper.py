@@ -13,6 +13,9 @@ hithand_joints = [
     'little3', 'middle0', 'middle1', 'middle2', 'middle3', 'ring0', 'ring1',
     'ring2', 'ring3', 'thumb0', 'thumb1', 'thumb2', 'thumb3'
 ]
+robotiq3f_joints = [
+'finger_1_joint_1','finger_2_joint_1','finger_middle_joint_1','palm_finger_1','palm_finger_2'
+]
 
 
 class RobotJointWrapper:
@@ -34,6 +37,9 @@ class RobotJointWrapper:
         if self.listen_prefix == 'hithand':
             self.joint_names = hithand_joints
             self.number_of_joints = len(hithand_joints)
+        # elif self.listen_prefix == 'robotiq3f':
+        #     self.joint_names = robotiq3f_joints
+        #     self.number_of_joints = len(robotiq3f_joints)
         elif self.listen_prefix == 'panda':
             self.joint_names = panda_joints
             self.number_of_joints = len(panda_joints)
@@ -41,7 +47,7 @@ class RobotJointWrapper:
             rospy.logerr('Unknown listen prefix: Should be panda or hithand')
 
         self.init_control_command_publishers()
-
+        # if self.listen_prefix != 'robotiq3f':
         listened_joint_command_topic = '/' + self.listen_prefix + '/joint_cmd'
         self.joint_command_subscriber = rospy.Subscriber(
             listened_joint_command_topic,

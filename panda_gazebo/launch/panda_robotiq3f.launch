@@ -89,7 +89,9 @@
   <param name="/arm/tip_name"            value="panda_hand" 
 	 if="$(arg load_gripper)"    />
 
-  <param name="/arm/tip_name"            value="panda_hand"
+  <!-- <param name="/arm/tip_name"            value="panda_hand"
+  if="$(arg load_robotiq)"    /> -->
+  <param name="/arm/tip_name"            value="robotiq3f"
   if="$(arg load_robotiq)"    />
 
   <param name="/arm/tip_name"            value="panda_link8"
@@ -98,8 +100,10 @@
   <!--<param name="/franka_gripper/robot_ip" value="sim" 
 	 unless="$(arg no_end_effector)"    /> -->
 
-  <param name="/arm/gravity_tip_name"    value="hithand"
-	 if="$(arg load_hand)" />
+  <!-- <param name="/arm/gravity_tip_name"    value="hithand"
+	 if="$(arg load_hand)" /> -->
+  <param name="/arm/gravity_tip_name"    value="robotiq3f"
+	 if="$(arg load_robotiq)" />
   <param name="/arm/gravity_tip_name"    value="panda_hand" 
 	 if="$(arg load_gripper)" />
   <param name="/arm/gravity_tip_name"    value="panda_link8" 
@@ -160,7 +164,7 @@
   <group if="$(arg load_robotiq)">
     <include file="$(find robotiq_3f_control)/launch/robotiq3f_control.launch">
       <arg name="robot_name"      value="$(arg robot_name)"/>
-      <arg name="attached"        value="$(arg load_hand)" />
+      <arg name="attached"        value="$(arg load_robotiq)" />
     </include>
     <node name="joint_state_splitter" pkg="panda_gazebo" type="joint_state_splitter"
           respawn="false" output="screen">
