@@ -516,9 +516,9 @@ The whole system gets started in the following order. Don't be too quick with ex
 
 2. Start the panda_hithand_moveit_config \
 `roslaunch panda_hithand_moveit_config panda_hithand_moveit.launch` 
-    - or to spawn robotiq3f moveit with panda (not yet fully implemented):\
-        ```bash
-        roslaunch robotiq_3f_rviz_moveit_panda panda_robotiq3f_moveit.launch
-        ```
+    - or to spawn robotiq3f moveit with panda:\
+        `roslaunch robotiq_3f_rviz_moveit_panda panda_robotiq3f_moveit.launch`
 3. Start the grasp_pipeline. This exposes the the grasping servers. Currently this does not do anything in and of itself. But you can for example spawn objects in Gazebo \
 `roslaunch grasp_pipeline grasp_pipeline_servers.launch` 
+    - or to Start the grasp_pipeline for robotiq3f:\
+        `roslaunch grasp_pipeline grasp_pipeline_servers_robotiq.launch`
