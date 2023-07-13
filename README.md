@@ -382,12 +382,22 @@ Once the dependencies are met, the package can be installed using catkin build (
     ```bash
     roslaunch panda_gazebo panda_hithand.launch
     ```
+    - or with the robotiq hand launch:
+        ```bash
+        roslaunch panda_gazebo panda_robotiq3f.launch
+        ```
 
 - Now you test the control by sending a command to the corresponding controller topic. E.g.
 
     ```bash
     rostopic pub /panda_hithand/panda_j1_position_controller/command std_msgs/Float64 "data: 0.0"
     ```
+    - Test the control of panda with mounted robotiq :
+
+        ```bash
+        rostopic pub /panda/panda_j7_position_controller/command std_msgs/Float64 "data: 1.0"
+        ```
+        Also, you can test the gripper functionality with the Robotiq3FGripperSimpleController.py or via ROS services as mentioned below in this Usage section.
 - To spawn the robotiq dummy gripper in gazebo run: 
 
     ```bash
@@ -505,14 +515,8 @@ For the entire grasping pipeline you will need more packages
 The whole system gets started in the following order. Don't be too quick with executing the commands below and execute each of them in a seperate terminal.
 1. Start the panda_simulator \
 `roslaunch panda_gazebo panda_hithand.launch` 
-    - or to spawn robotiq next to panda:\
+    - or to start the panda_simulator with the robotiq hand:\
     `roslaunch panda_gazebo panda_robotiq3f.launch`\
-     Test the control of panda with mounted robotiq by sending a command to the corresponding controller topic. E.g.
-
-        ```bash
-        rostopic pub /panda/panda_j7_position_controller/command std_msgs/Float64 "data: 1.0"
-        ```
-        Also, you can test the gripper functionality with the Robotiq3FGripperSimpleController.py or via ROS services mentioned in the Usage section.
 
 2. Start the panda_hithand_moveit_config \
 `roslaunch panda_hithand_moveit_config panda_hithand_moveit.launch` 
