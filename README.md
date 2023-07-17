@@ -314,7 +314,7 @@ https://docs.nvidia.com/cuda/archive/10.1/cuda-installation-guide-linux/index.ht
 
     catkin build hithand_control hithand_gazebo hithand_description
     ```
-4. Robotiq ros
+5. Robotiq ros
     ```bash
 
     sudo apt-get install -y ros-melodic-socketcan-interface ros-melodic-soem
@@ -326,7 +326,17 @@ https://docs.nvidia.com/cuda/archive/10.1/cuda-installation-guide-linux/index.ht
 
     catkin build robotiq
     ```
-5. Trajectory smoothing
+6. Robotiq ros control pkg:
+    ```bash
+    cd hithand_ws/src
+
+    git clone https://github.com/davidmartinez13/robotiq_3f_ros_pkg.git
+
+    cd ..
+
+    catkin build robotiq_3f_ros_pkg
+    ```
+7. Trajectory smoothing
     ```bash
     cd hithand_ws/src
 
@@ -337,7 +347,7 @@ https://docs.nvidia.com/cuda/archive/10.1/cuda-installation-guide-linux/index.ht
     catkin build trajectory_smoothing
     ```
 
-6. Gazebo realsense plugin
+8. Gazebo realsense plugin
     ```baseh
     cd hithand_ws/src
 
@@ -372,13 +382,23 @@ Once the dependencies are met, the package can be installed using catkin build (
     ```bash
     roslaunch panda_gazebo panda_hithand.launch
     ```
+    - or with the robotiq hand launch:
+        ```bash
+        roslaunch panda_gazebo panda_robotiq3f.launch
+        ```
 
 - Now you test the control by sending a command to the corresponding controller topic. E.g.
 
     ```bash
     rostopic pub /panda_hithand/panda_j1_position_controller/command std_msgs/Float64 "data: 0.0"
     ```
-- To spawn the robotiq articulated gripper in gazebo run: 
+    - Test the control of panda with mounted robotiq :
+
+        ```bash
+        rostopic pub /panda/panda_j7_position_controller/command std_msgs/Float64 "data: 1.0"
+        ```
+        Also, you can test the gripper functionality with the Robotiq3FGripperSimpleController.py or via ROS services as mentioned below in this Usage section.
+- To spawn the robotiq dummy gripper in gazebo run: 
 
     ```bash
     roslaunch robotiq_3f_gripper_articulated_gazebo robotiq_gripper_empty_world.launch
@@ -388,6 +408,63 @@ Once the dependencies are met, the package can be installed using catkin build (
     ```bash
     roslaunch robotiq_3f_gripper_articulated_gazebo robotiq_gripper_empty_world_macro.launch
     ```
+
+    - Test the control with the provided python script:
+        ```bash
+        cd /robotiq/robotiq_3f_gripper_control/nodes/
+
+        python2 Robotiq3FGripperSimpleController.py
+        ```
+        - The following commands are available from the python script:
+    
+            r: Reset
+
+            a: Activate
+
+            c: Close
+
+            o: Open
+
+            b: Basic mode
+
+            p: Pinch mode
+
+            w: Wide mode
+
+            s: Scissor mode
+
+            (0-255): Go to that position
+
+            f: Faster
+
+            l: Slower
+
+            i: Increase force
+
+            d: Decrease force
+
+    - Or, control the gripper with ros services:
+        
+        - If in sim, then launch the listener for sim:
+            ```
+            roslaunch robotiq_3f_driver listener_sim.launch
+            ```
+        - If not on sim, launch the listener:
+            ```
+            roslaunch robotiq_3f_driver listener.launch ip_address:=192.168.1.11
+            ```
+            Both ways the ROS services and gripper will be activated.\
+            Try sending some commands as:
+
+            ```
+            rosservice call /robotiq_3f_gripper/activate
+            rosservice call /robotiq_3f_gripper/set_mode wide
+            rosservice call /robotiq_3f_gripper/set_position 200
+            rosservice call /robotiq_3f_gripper/set_position 150
+            rosservice call /robotiq_3f_gripper/set_position 0
+            ```
+        
+
 
 ## Grasping Pipeline
 For the entire grasping pipeline you will need more packages
@@ -437,12 +514,15 @@ For the entire grasping pipeline you will need more packages
 ### Starting Procedure
 The whole system gets started in the following order. Don't be too quick with executing the commands below and execute each of them in a seperate terminal.
 1. Start the panda_simulator \
-`roslaunch panda_gazebo panda_hithand.launch` \
-or to spawn robotiq next to panda:\
-`roslaunch panda_gazebo panda_robotiq3f.launch`
+`roslaunch panda_gazebo panda_hithand.launch` 
+    - or to start the panda_simulator with the robotiq hand:\
+    `roslaunch panda_gazebo panda_robotiq3f.launch`\
 
 2. Start the panda_hithand_moveit_config \
 `roslaunch panda_hithand_moveit_config panda_hithand_moveit.launch` 
-
+    - or to spawn robotiq3f moveit with panda:\
+        `roslaunch robotiq_3f_rviz_moveit_panda panda_robotiq3f_moveit.launch`
 3. Start the grasp_pipeline. This exposes the the grasping servers. Currently this does not do anything in and of itself. But you can for example spawn objects in Gazebo \
 `roslaunch grasp_pipeline grasp_pipeline_servers.launch` 
+    - or to Start the grasp_pipeline for robotiq3f:\
+        `roslaunch grasp_pipeline grasp_pipeline_servers_robotiq.launch`

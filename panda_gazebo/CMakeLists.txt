@@ -104,12 +104,17 @@ install(
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
   USE_SOURCE_PERMISSIONS
 )
-# Add joint initializer
+# Add joint initializers
 add_executable(init_panda_pose src/init_panda_pose.cpp)
 target_link_libraries(init_panda_pose ${catkin_LIBRARIES})
+add_executable(init_panda_pose_robotiq src/init_panda_pose_robotiq.cpp)
+target_link_libraries(init_panda_pose_robotiq ${catkin_LIBRARIES})
 # Add joint state splitter
 add_executable(joint_state_splitter src/joint_state_splitter.cpp)
 target_link_libraries(joint_state_splitter ${catkin_LIBRARIES})
+
+add_executable(joint_state_splitter_robotiq src/joint_state_splitter_robotiq.cpp)
+target_link_libraries(joint_state_splitter_robotiq ${catkin_LIBRARIES})
 # Add joint state wrapper
 #add_executable(robot_joint_wrapper src/robot_joint_wrapper.cpp)
 #target_link_libraries(robot_joint_wrapper ${catkin_LIBRARIES})

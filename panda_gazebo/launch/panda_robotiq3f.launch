@@ -15,11 +15,12 @@
   <!-- -->
   <!--========================================================================================-->
   <arg name="arm_name"                  default="panda"/>
-  <arg name="hand_name"                 default="hithand"/>
+  <arg name="hand_name"                 default="robotiq3f"/>
+  <!-- <arg name="hand_name"                 default="hithand"/> -->
   <arg name="no_end_effector"           default="false"/>
   <arg name="load_gripper"              default="false"/> 
   <arg name="load_hand"                 default="false" /> 
-  <arg name="load_robotiq"                 default="false" />
+  <arg name="load_robotiq"                 default="true" />
   <arg name="paused"                    default="false"/>
   <arg name="/use_sim_time"              default="true" />
   <arg name="gui"                       default="true" />
@@ -42,10 +43,16 @@
 
   <!-- ================================================================================== -->
   <!-- Set robot name based on end-effector (different based on actuated/non-actuated EE) -->
-  <arg name="robot_name" if="$(arg load_hand)"
+  <!-- <arg name="robot_name" if="$(arg load_hand)"
        value="$(arg arm_name)_$(arg hand_name)"/>
   <arg name="robot_name" unless="$(arg load_hand)"
-       value="$(arg arm_name)"/>
+       value="$(arg arm_name)"/> -->
+  <arg name="robot_name"   value="$(arg arm_name)_$(arg hand_name)"
+       if="$(arg load_hand)"/>
+  <arg name="robot_name"   value="$(arg arm_name)"
+       if="$(arg load_robotiq)"/>
+  <arg name="robot_name"   value="panda"
+       if="$(eval not arg('load_hand') and not arg('load_robotiq'))"/>
   <!-- ================================================================================== -->
 
   <!-- Launch an empty world with ODE physics solver -->
@@ -66,19 +73,25 @@
 
 
   <!-- Load parameters to ROS parameter server-->
-  <rosparam command="load" file="$(find panda_gazebo)/config/robot_details.yaml"/>
+  <rosparam command="load" file="$(find panda_gazebo)/config/robot_details_robotiq.yaml"/>
 
   <param name="object_datasets_folder"   value="$(arg object_datasets_folder)"/>
   <param name="robot_name" type="str"    value="$(arg robot_name)"/>
-  <param name="hand_name"  type="str"    value="hithand"/>
+  <!-- <param name="hand_name"  type="str"    value="hithand"/> -->
+  <param name="hand_name"  type="str"    value="$(arg hand_name)"/> 
+
   <param name="/arm/root_name"           value="panda_link0"/>
+  <param name="/arm/tip_name"            value="$(arg hand_name)" 
+    if="$(arg load_robotiq)" />
   <param name="/arm/tip_name"            value="hithand" 
     if="$(arg load_hand)" />
 
   <param name="/arm/tip_name"            value="panda_hand" 
 	 if="$(arg load_gripper)"    />
 
-  <param name="/arm/tip_name"            value="panda_hand"
+  <!-- <param name="/arm/tip_name"            value="panda_hand"
+  if="$(arg load_robotiq)"    /> -->
+  <param name="/arm/tip_name"            value="robotiq3f"
   if="$(arg load_robotiq)"    />
 
   <param name="/arm/tip_name"            value="panda_link8"
@@ -87,8 +100,10 @@
   <!--<param name="/franka_gripper/robot_ip" value="sim" 
 	 unless="$(arg no_end_effector)"    /> -->
 
-  <param name="/arm/gravity_tip_name"    value="hithand"
-	 if="$(arg load_hand)" />
+  <!-- <param name="/arm/gravity_tip_name"    value="hithand"
+	 if="$(arg load_hand)" /> -->
+  <param name="/arm/gravity_tip_name"    value="robotiq3f"
+	 if="$(arg load_robotiq)" />
   <param name="/arm/gravity_tip_name"    value="panda_hand" 
 	 if="$(arg load_gripper)" />
   <param name="/arm/gravity_tip_name"    value="panda_link8" 
@@ -104,18 +119,9 @@
 	realsense:=$(arg realsense)
 	--inorder"/>
 
-  <!-- Spawn urdf of the robot -->
-  <!-- <node name="robot_description" pkg="gazebo_ros" type="spawn_model" 
-	args="-urdf -param robot_description -model $(arg robot_name)
-        -J Right_Thumb_1 0.0873 -J Right_Thumb_2 0.0873 -J Right_Thumb_3 0.0873
-        -J Right_Index_1 0.0873 -J Right_Index_2 0.0873 -J Right_Index_3 0.0873
-        -J Right_Middle_1 0.0873 -J Right_Middle_2 0.0873 -J Right_Middle_3 0.0873
-        -J Right_Ring_1 0.0873 -J Right_Ring_2 0.0873 -J Right_Ring_3 0.0873
-        -J Right_Little_1 0.0873 -J Right_Little_2 0.0873 -J Right_Little_3 0.0873
-	      -robot_namespace $(arg robot_name)"
-        respawn="false" output="screen" /> -->
   <node name="robot_description" pkg="gazebo_ros" type="spawn_model" 
 	args="-urdf -param robot_description -model $(arg robot_name)
+        -J panda_joint4 -0.5 -J panda_joint6 1.0
 	      -robot_namespace $(arg robot_name)"
         respawn="false" output="screen" />
 
@@ -132,24 +138,13 @@
       <remap from="/joint_states" to="/$(arg robot_name)/joint_states" />
   </node>
 
-  <!-- from src/robotiq/robotiq_3f_gripper_visualization/launch/robotiq_gripper_upload.launch -->
-  <param name="robotiq_description" command="$(find xacro)/xacro.py '$(find robotiq_3f_gripper_visualization)/cfg/robotiq-3f-gripper_articulated.xacro'" />
-
-  <!-- <node pkg="robot_state_publisher" type="state_publisher" name="robotiq_hands_l_hand_robot_state_publisher">
-    <param name="publish_frequency" type="double" value="50.0" />
-    <remap from="joint_states" to="/robotiq_hands/left_hand/joint_states" />
-  </node> -->
-
-      <!-- spawn in gazebo -->
-  <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robotiq_description -model robotiq_3f -z 0.1" respawn="false" output="screen" />
-
-
   <!-- ++++++++++++++++++ Controllers +++++++++++++++++++ -->
   <!-- Panda arm controller -->
   <include file="$(find panda_sim_controllers)/launch/panda_control.launch">
 	<arg name="gui"               value="$(arg gui)" />
 	<arg name="load_gripper"      value="$(arg load_gripper)" />
-	<arg name="load_hand"         value="$(arg load_hand)" />
+	<arg name="load_robotiq"         value="$(arg load_robotiq)" />
+  <arg name="load_hand"         value="$(arg load_hand)" />
   </include>
   <!-- Hithand controller -->
   <group if="$(arg load_hand)">
@@ -165,9 +160,22 @@
 	  <param name="arm_string"    value="$(arg arm_name)"/> 
         </node> 
   </group> 
+  <!-- Robotiq controller -->
+  <group if="$(arg load_robotiq)">
+    <include file="$(find robotiq_3f_control)/launch/robotiq3f_control.launch">
+      <arg name="robot_name"      value="$(arg robot_name)"/>
+      <arg name="attached"        value="$(arg load_robotiq)" />
+    </include>
+    <node name="joint_state_splitter_robotiq" pkg="panda_gazebo" type="joint_state_splitter_robotiq"
+          respawn="false" output="screen">
+      <param name="listen_prefix" value="robotiq_hand"/> 
+      <param name="hand_prefix"   value="$(arg hand_name)"/>
+      <param name="arm_string"    value="$(arg arm_name)"/> 
+    </node>
+  </group> 	
 
   <!-- Initialize panda pose -->
-  <node name="init_panda_pose" pkg="panda_gazebo" type="init_panda_pose" respawn="false"
+  <node name="init_panda_pose_robotiq" pkg="panda_gazebo" type="init_panda_pose_robotiq" respawn="false"
 	output="screen"/> 
 
   <!-- Register depth and RGB data -->
