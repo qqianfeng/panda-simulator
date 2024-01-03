@@ -3,6 +3,8 @@ System info: Ubuntu 20.04 - gazebo 9 - ROS noetic
 wsl would need diff setup
 https://ubuntu.com/tutorials/enabling-gpu-acceleration-on-ubuntu-on-wsl2-with-the-nvidia-cuda-platform#1-overview
 
+---
+# https://classic.gazebosim.org/tutorials?tut=ros_installing&cat=connect_ros
 # 2. Install ROS NOETIC 
 **Run `bash install-ros_noetic.sh`**
 
