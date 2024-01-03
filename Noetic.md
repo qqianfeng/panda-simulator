@@ -1,4 +1,7 @@
 System info: Ubuntu 20.04 - gazebo 9 - ROS noetic
+# Install CUDA
+wsl would need diff setup
+https://ubuntu.com/tutorials/enabling-gpu-acceleration-on-ubuntu-on-wsl2-with-the-nvidia-cuda-platform#1-overview
 
 # Install Gazebo 9 with dart from source
 **Run `bash gazebo.sh`**
@@ -13,14 +16,18 @@ Please download and copy https://github.com/dartsim/dart/blob/release-6.13/dart/
 
 In the end, run `sudo make install`
 
+Path setup 
+```
+echo '/usr/local/lib' | sudo tee /etc/ld.so.conf.d/gazebo.conf
+sudo ldconfig
+```
+
 
 *Clarification:*
 
 gazebo.sh is built based on the following installation guide for convenience: https://classic.gazebosim.org/tutorials?tut=install_from_source&cat=install
 (Section "Prerequisites", "Install Required Dependencies", "Optional Physics Engines", "Build And Install Gazebo"(step 1-8).)
 
-
-# Install CUDA
 
 # Install ROS NOETIC 
 Desktop-Full Install

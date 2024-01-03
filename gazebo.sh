@@ -9,10 +9,10 @@ echo $BASE_DEPENDENCIES $GAZEBO_BASE_DEPENDENCIES | tr -d '\\' | xargs sudo apt-
 # Main repository
 sudo apt-add-repository ppa:dartsim
 sudo apt-get update
-sudo apt-get install libdart6-dev
+sudo apt-get install -y libdart6-dev
 
 # Optional DART utilities
-sudo apt-get install libdart6-utils-urdf-dev
+sudo apt-get install -y libdart6-utils-urdf-dev
 
 git clone https://github.com/osrf/gazebo /tmp/gazebo
 cd /tmp/gazebo
@@ -26,3 +26,6 @@ cmake ../
 
 make -j4
 sudo make install
+
+echo '/usr/local/lib' | sudo tee /etc/ld.so.conf.d/gazebo.conf
+sudo ldconfig
