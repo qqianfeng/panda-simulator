@@ -1,9 +1,24 @@
-# Install Gazebo 11 with dart from source
-https://classic.gazebosim.org/tutorials?tut=install_from_source&cat=install
+System info: Ubuntu 20.04 - gazebo 9 - ROS noetic
 
-Notice: this file is missing when you try to make -j4, download it manually and copy-paste to the correct path would solve the problem.
+# Install Gazebo 9 with dart from source
+**Run `bash gazebo.sh`**
 
-https://github.com/dartsim/dart/blob/release-6.13/dart/utils/detail/XmlHelpers-impl.hpp
+**There will be an error for not finding XmlHelpers-impl.hpp file.**
+
+*Root Cause: Dart project supports official only till ubuntu 19.04.*
+
+Please download and copy https://github.com/dartsim/dart/blob/release-6.13/dart/utils/detail/XmlHelpers-impl.hpp to the path 
+/usr/include/dart/utils/detail/XmlHelpers-impl.hpp, and then run 
+`make -j4` under /tmp/gazebo/build again.
+
+In the end, run `sudo make install`
+
+
+*Clarification:*
+
+gazebo.sh is built based on the following installation guide for convenience: https://classic.gazebosim.org/tutorials?tut=install_from_source&cat=install
+(Section "Prerequisites", "Install Required Dependencies", "Optional Physics Engines", "Build And Install Gazebo"(step 1-8).)
+
 
 # Install CUDA
 
