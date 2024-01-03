@@ -4,4 +4,3 @@ catkin_pkg_modules
 rospy
 tf2_ros
 torch
-torchvision
