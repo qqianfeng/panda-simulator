@@ -3,7 +3,18 @@ System info: Ubuntu 20.04 - gazebo 9 - ROS noetic
 wsl would need diff setup
 https://ubuntu.com/tutorials/enabling-gpu-acceleration-on-ubuntu-on-wsl2-with-the-nvidia-cuda-platform#1-overview
 
-# 2. Install Gazebo 9 with dart from source
+# 2. Install ROS NOETIC 
+**Run `bash install-ros_noetic.sh`**
+
+---
+*Reference:*
+Desktop-Full Install
+http://wiki.ros.org/noetic/Installation/Ubuntu
+
+Note: choose the Desktop Install (NO Desktop-Full Install!!)
+
+---
+# 3. Install Gazebo 9 with dart from source
 **Run `bash install-gazebo.sh`**
 
 **There will be an error for not finding XmlHelpers-impl.hpp file.**
@@ -29,18 +40,6 @@ For wsl, libcuda needs to adjusted: https://github.com/microsoft/WSL/issues/5548
 
 gazebo.sh is built based on the following installation guide for convenience: https://classic.gazebosim.org/tutorials?tut=install_from_source&cat=install
 (Section "Prerequisites", "Install Required Dependencies", "Optional Physics Engines", "Build And Install Gazebo"(step 1-8).)
-
----
-
-# 3. Install ROS NOETIC 
-**Run `bash install-ros_noetic.sh`**
-
----
-*Reference:*
-Desktop-Full Install
-http://wiki.ros.org/noetic/Installation/Ubuntu
-
-Note: choose the Desktop Install (NO Desktop-Full Install!!)
 
 ---
 
