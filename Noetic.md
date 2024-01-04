@@ -5,7 +5,7 @@ https://ubuntu.com/tutorials/enabling-gpu-acceleration-on-ubuntu-on-wsl2-with-th
 
 ---
 # 2. Install ros-gazebo
-**Follow the instruction here:
+**Reference:
 https://classic.gazebosim.org/tutorials?tut=ros_installing&cat=connect_ros**
 ## 2.1 Install ROS NOETIC 
 **Run `bash install-ros_noetic.sh`**
@@ -38,32 +38,48 @@ roscore &
 rosrun gazebo_ros gazebo
 ```
 
-# 3. Dependencies
+# 3. Install franka-panda-simulator
+## 3.1 dependencies
 ```
 pip install -r requirements.txt
+
+sudo apt install ros-noetic-libfranka
+
 sudo apt install -y ros-noetic-libfranka ros-noetic-rospy-message-converter ros-noetic-effort-controllers ros-noetic-joint-state-controller ros-noetic-moveit ros-noetic-moveit-commander ros-noetic-moveit-visual-tools
 
 ```
 
-1. pip install -r requirements.txt #(to install numpy and numpy-quaternion) (or pip3 install -r requirements.txt)
+## 3.2 install
+The following dependencies can be installed using the .rosinstall file (instructions in next section: Building the Package).
 
-2. libfranka (apt install ros-${ROS_DISTRO}-libfranka or install from source).
+franka-ros
+panda_moveit_config
+Franka ROS Interface (branch v0.7.1-dev branch)
+franka_panda_description (urdf and model files from panda_description package modified to work in Gazebo, with the custom controllers, and more realistic dynamics parameters)
+orocos-kinematics-dynamics (requires a specific commit; see instructions below)
 
-3. Most of the other basic dependencies can be met by running the following apt-get command:
+NOTE: The franka_panda_description package above has to be independently updated regularly (using git pull) to get the latest robot description, visual and dynamics parameters.
+
 ```
-apt install ros-${ROS_DISTRO}-rospy-message-converter ros-${ROS_DISTRO}-effort-controllers ros-${ROS_DISTRO}-joint-state-controller ros-${ROS_DISTRO}-moveit ros-${ROS_DISTRO}-moveit-commander ros-${ROS_DISTRO}-moveit-visual-tools
-```
-4. sudo apt-get install ros-kinetic-trac-ik-kinematics-plugin
-ros-noetic-image-common
+cd <catkin_ws>/src
+git clone -b noetic-hithand https://github.com/qianbot/panda-simulator.git
 
-Note: 
-Problem 1 - ros-$ROS_DISTRO-gazebo-ros-control: 
-dependency problem with gazebo_ros_pkgs
-Solution: install from source
-https://classic.gazebosim.org/tutorials?tut=ros_installing&cat=connect_ros
+wstool init
+wstool merge panda_simulator/dependencies.rosinstall
+wstool up
 
+# use old ros-compatible version of kdl
+cd orocos_kinematics_dynamics && rm -rf * && git checkout b35c424e && git reset --hard
+cd ../../.. && rosdep install -y --from-paths src --ignore-src --rosdistro noetic --skip-keys python-sip
 
-# if not running 
 source /opt/ros/noetic/setup.bash
-source ~/catkin_ws/devel/setup.bash
-source ~/hithand_ws/devel/setup.bash
+catkin build # if catkin not found, install catkin tools (apt install python3-catkin-tools)
+
+echo "source ~/hithand_ws/devel/setup.bash" >> ~/.bashrc
+source devel/setup.bash
+```
+
+## 3.3 test
+```
+roslaunch panda_gazebo panda_world.launch
+```

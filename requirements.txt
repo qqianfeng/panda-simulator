@@ -1,6 +1,2 @@
 numpy 
 numpy-quaternion==2020.5.11.13.33.35
-catkin_pkg_modules
-rospy
-tf2_ros
-torch
